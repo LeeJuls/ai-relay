@@ -2,7 +2,11 @@
 
 [English](../README.md) · [한국어](../README.ko.md) · [日本語](../README.ja.md)
 
-## Quick start
+## From Git
+
+Install Git and Node.js 24.14.0, then run `git clone https://github.com/LeeJuls/ai-relay.git`, enter `ai-relay`, and run `relay.cmd help`. No npm install is required. Continue below with address pairing and own-chat registration; the source checkout does not require extraction. The optional `install`/`uninstall` commands are for packaged ZIP copies, not the source checkout. Claude Desktop uses its Code tab (Claude Code) for this connection.
+
+## From ZIP
 
 Extract the verified Windows x64 ZIP. Its pinned Node runtime is included; no administrator rights, global npm installation, app login change or PowerShell policy change is needed. From the extracted directory:
 

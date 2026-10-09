@@ -4,7 +4,7 @@
 | --- | --- | --- |
 | Windows x64 / Node 24.14.0 | Local source tests, isolated child processes, fixed-runtime package verification | Independent account/PC acceptance pending |
 | Codex Desktop | Experimental private framed pipe; new adapter read-only list_artifacts probe on the current host succeeded without starting a model | No official stable desktop integration API promised; new-product live round trip pending |
-| Claude Code | Own-session messaging socket adapter; local native socket protocol tests | Requires messaging available in the receiving session; new-product live round trip pending |
+| Claude Desktop (Code tab) / Claude Code | Own-session messaging socket adapter; local native socket protocol tests | Requires messaging available in the receiving session; new-product live round trip pending |
 | Prior internal tools | Actual two-way, busy/idle, supervised app-restart observations informed the design | These are not new-product acceptance results |
 | macOS / Linux / WSL / remote hosts | Some portable core tests are suitable for CI | No packaged support claim |
 

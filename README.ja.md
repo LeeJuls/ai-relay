@@ -2,21 +2,22 @@
 
 [English](README.md) · [한국어](README.ko.md) · **日本語**
 
-開いている **Codex Desktop と Claude Code の会話**の間でメッセージを渡す小さなツールです。
+**Claude Desktop（Code タブ）と Codex Desktop の会話**をつなぎ、メッセージをやり取りするツールです。
 中継自体はモデルを呼び出しません。受信した AI の会話では通常どおりトークンを使用します。
 
 ## はじめに
 
-1. [Windows ZIP](https://github.com/LeeJuls/ai-relay/releases)をダウンロードして展開します。
-2. [設定ガイド（英語）](docs/usage.md)に従い、各受信側の会話内でヘルパーを登録します。
-3. 質問を送ります。
+Git と Node.js 24.14.0 がインストール済みの場合：
 
 ```powershell
-'この計画をレビューしてください。' | Set-Content question.txt -Encoding utf8
-.\relay.cmd send --root <データフォルダー> --as codex-demo --body-file question.txt --wake
+git clone https://github.com/LeeJuls/ai-relay.git
+cd ai-relay
+.\relay.cmd help
 ```
 
-コマンドは `.\relay.cmd help` で確認できます。ソースからの実行には Node.js 24.14.0 が必要です。
+Node.js 同梱の [Windows ZIP](https://github.com/LeeJuls/ai-relay/releases)を展開して使うこともできます。Git から実行する場合、ZIP は不要です。
+
+[設定ガイド（英語）](docs/usage.md)に従い、各受信側の会話内でヘルパーを登録してください。npm install は不要です。
 
 Windows x64 向けの実験版です。アプリの互換性と外部ユーザーによる検証はまだ完了していません。
 

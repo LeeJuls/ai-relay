@@ -2,7 +2,11 @@
 
 [English](../README.md) · [한국어](../README.ko.md) · [日本語](../README.ja.md)
 
-## 설치와 초기 연결
+## Git으로 실행
+
+Git과 Node.js 24.14.0을 설치하고 `git clone https://github.com/LeeJuls/ai-relay.git`으로 받은 다음, `ai-relay` 폴더에서 `relay.cmd help --lang ko`를 실행하세요. 별도 npm 설치나 ZIP 압축 해제는 필요 없습니다. 아래의 주소 등록·각 대화 도우미 등록을 이어서 진행합니다. 선택적 `install`·`uninstall` 명령은 ZIP 배포본용이며 소스 폴더에는 필요 없습니다. Claude 데스크톱에서는 Code 탭(Claude Code)을 사용합니다.
+
+## ZIP으로 실행
 
 1. [GitHub Releases](https://github.com/LeeJuls/ai-relay/releases)에서 Windows x64 ZIP과 SHA256 파일을 받고, 해시를 확인한 뒤 원하는 폴더에 압축을 풉니다. `runtime/node.exe`가 포함되어 별도 Node 설치가 필요 없습니다. 관리자 권한이나 PowerShell 실행 정책 변경은 필요 없습니다.
 2. `relay.cmd help --lang ko`로 실행을 확인합니다. 선택적으로 `relay.cmd install`을 실행하면 현재 사용자의 LocalAppData 아래에 복사합니다. 설치 폴더는 비어 있어야 합니다.

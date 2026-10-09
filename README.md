@@ -2,23 +2,24 @@
 
 **English** · [한국어](README.ko.md) · [日本語](README.ja.md)
 
-A small tool for passing messages between your open **Codex Desktop and Claude Code** chats.
+Connect **Claude Desktop (Code tab) and Codex Desktop** chats to exchange messages.
 The relay makes no model calls; receiving chats use their normal token allowance.
 
 ## Get started
 
-1. Download and extract the [Windows ZIP](https://github.com/LeeJuls/ai-relay/releases).
-2. Follow the [setup guide](docs/usage.md) to register a helper inside each receiving chat.
-3. Send a question:
+With Git and Node.js 24.14.0 installed:
 
 ```powershell
-'Review this plan?' | Set-Content question.txt -Encoding utf8
-.\relay.cmd send --root <data-directory> --as codex-demo --body-file question.txt --wake
+git clone https://github.com/LeeJuls/ai-relay.git
+cd ai-relay
+.\relay.cmd help
 ```
 
-Use `.\relay.cmd help` for commands. Source users need Node.js 24.14.0.
+Or extract the [Windows ZIP](https://github.com/LeeJuls/ai-relay/releases), which includes Node.js. ZIP is optional when running from Git.
 
-Windows x64 experimental preview. App compatibility and independent-user testing are still pending.
+Register a helper inside each receiving chat using the [setup guide](docs/usage.md). No npm install is needed.
+
+Windows x64 experimental preview; app compatibility and independent-user testing are still pending.
 
 ## License
 
