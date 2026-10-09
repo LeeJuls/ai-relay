@@ -1,0 +1,8 @@
+* text=auto
+*.mjs text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+LICENSE text eol=lf
+*.cmd text eol=crlf
+third-party/NODE-LICENSE.txt -text -whitespace

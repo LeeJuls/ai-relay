@@ -1,0 +1,44 @@
+{
+  "name": "ai-relay-local-prototype",
+  "version": "0.1.0-preview.1",
+  "private": true,
+  "license": "MIT",
+  "description": "Local message relay for existing AI conversations; experimental Windows developer preview",
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "exports": "./lib/core.mjs",
+  "bin": {
+    "ai-relay": "./bin/relay.mjs"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "locales/",
+    "third-party/",
+    "relay.cmd",
+    "README.md",
+    "README.ko.md",
+    "PROVENANCE.md",
+    "SECURITY.md",
+    "SUPPORT.md",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md",
+    "PREVIEW-CHECKLIST.md",
+    "scripts/acceptance.mjs",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node scripts/check.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LeeJuls/ai-relay.git"
+  },
+  "homepage": "https://github.com/LeeJuls/ai-relay",
+  "bugs": {
+    "url": "https://github.com/LeeJuls/ai-relay/issues"
+  }
+}

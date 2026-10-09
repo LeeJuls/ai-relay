@@ -1,0 +1,47 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+import { sandbox } from './fixture.mjs';
+
+const exec = promisify(execFile);
+test('preview ZIP is deterministic, checksum-bound, and runs with its own runtime outside the source directory', { skip: process.platform !== 'win32' }, async t => {
+  const { container } = await sandbox(t);
+  const { buildPreview } = await import('../scripts/build-preview.mjs');
+  const source = fileURLToPath(new URL('../', import.meta.url));
+  const first = await buildPreview({ outDir: path.join(container, 'first'), runtime: process.execPath });
+  const second = await buildPreview({ outDir: path.join(container, 'second'), runtime: process.execPath });
+  assert.equal(first.sha256, second.sha256);
+  assert.ok(first.entries.includes('runtime/node.exe')); assert.ok(first.entries.includes('third-party/NODE-LICENSE.txt'));
+  assert.equal(first.entries.some(x => /test\/|collab\/|\.log$|config\.json$|receipts/i.test(x)), false);
+  const target = path.join(container, '한글 portable');
+  const quote = s => "'" + s.replaceAll("'", "''") + "'";
+  await exec('powershell.exe', ['-NoProfile', '-Command', `Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::ExtractToDirectory(${quote(first.file)}, ${quote(target)})`], { windowsHide: true });
+  const { stdout } = await exec(path.join(target, 'runtime', 'node.exe'), [path.join(target, 'bin', 'relay.mjs'), 'help', '--lang', 'ko'], { cwd: container, env: { SystemRoot: process.env.SystemRoot }, windowsHide: true });
+  assert.match(stdout, /[가-힣]/);
+  assert.equal(await fs.readFile(path.join(target, 'README.md'), 'utf8'), await fs.readFile(path.join(source, 'README.md'), 'utf8'));
+  const selfTestRoot = path.join(container, 'portable acceptance');
+  const testRun = await exec(path.join(target, 'runtime', 'node.exe'), [path.join(target, 'scripts', 'acceptance.mjs'), selfTestRoot], { cwd: container, env: { SystemRoot: process.env.SystemRoot }, windowsHide: true });
+  assert.equal(JSON.parse(testRun.stdout).twoWay, true);
+  assert.equal(JSON.parse(testRun.stdout).helpersStopped, true);
+  const { installPackage, uninstallPackage } = await import('../lib/installation.mjs');
+  const installed = path.join(container, 'installed copy');
+  await installPackage({ source: target, target: installed });
+  await assert.rejects(installPackage({ source: target, target: installed }), { code: 'INSTALL_EXISTS' });
+  const externalData = path.join(container, 'preserved-data.json'); await fs.writeFile(externalData, 'owner data');
+  const unknown = path.join(installed, 'owner-note.txt'); await fs.writeFile(unknown, 'keep');
+  await assert.rejects(uninstallPackage({ target: installed }), { code: 'INSTALL_MODIFIED' });
+  assert.equal(await fs.readFile(unknown, 'utf8'), 'keep'); await fs.unlink(unknown);
+  await uninstallPackage({ target: installed });
+  await assert.rejects(fs.stat(installed), { code: 'ENOENT' }); assert.equal(await fs.readFile(externalData, 'utf8'), 'owner data');
+});
+test('package builder refuses an unverified runtime before writing a release archive', async t => {
+  const { container } = await sandbox(t);
+  const { buildPreview } = await import('../scripts/build-preview.mjs');
+  const fake = path.join(container, 'node.exe'); await fs.writeFile(fake, 'fake binary');
+  await assert.rejects(buildPreview({ outDir: path.join(container, 'release'), runtime: fake }), { code: 'RUNTIME_HASH_MISMATCH' });
+  await assert.rejects(fs.stat(path.join(container, 'release')), { code: 'ENOENT' });
+});
