@@ -27,7 +27,10 @@
     "CHANGELOG.md",
     "PREVIEW-CHECKLIST.md",
     "scripts/acceptance.mjs",
-    "LICENSE"
+    "LICENSE",
+    "README.ja.md",
+    "docs/usage.md",
+    "docs/usage.ko.md"
   ],
   "scripts": {
     "test": "node --test test/*.test.mjs",

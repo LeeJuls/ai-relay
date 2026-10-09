@@ -10,7 +10,7 @@ const SOURCE = fileURLToPath(new URL('../', import.meta.url));
 const NODE_HASH = '63c259c81e5d472b5f11c8d506070130cb04a1ecf84b80377a34ed6ec9048088';
 const LICENSE_HASH = '4573185d56580da2b890ba34a85a409257640f1c5632eade4300137266194d18';
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-const ALLOW = ['bin', 'lib', 'locales', 'third-party', 'scripts/acceptance.mjs', 'relay.cmd', 'package.json', 'LICENSE', 'README.md', 'README.ko.md', 'PROVENANCE.md', 'SECURITY.md', 'SUPPORT.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'PREVIEW-CHECKLIST.md'];
+const ALLOW = ['bin', 'lib', 'locales', 'third-party', 'scripts/acceptance.mjs', 'relay.cmd', 'package.json', 'LICENSE', 'README.md', 'README.ko.md', 'README.ja.md', 'docs/usage.md', 'docs/usage.ko.md', 'PROVENANCE.md', 'SECURITY.md', 'SUPPORT.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'PREVIEW-CHECKLIST.md'];
 
 // Fixed timestamps, sort order and compression level; ZIP32 only, no current path or wall-clock metadata.
 function zip(entries) {
