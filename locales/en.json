@@ -1,4 +1,10 @@
 {
+  "BOOTSTRAP_DOWNLOAD": "Downloading the verified Node.js runtime for AI Relay (first run only)...",
+  "BOOTSTRAP_PLATFORM": "This launcher supports Windows x64 only.",
+  "BOOTSTRAP_PATH": "The runtime path must not be a link or junction.",
+  "BOOTSTRAP_HASH": "Node.js checksum mismatch. The file was not executed or replaced.",
+  "BOOTSTRAP_FAILED": "Node.js download failed. Check your connection and run relay.cmd again, or use the ZIP with Node included.",
+  "BOOTSTRAP_LOCK": "Another runtime download is still running. Try again after it finishes.",
   "HELP": "Local AI relay preview. Commands: pair, send, reply, inbox, done, start, stop, recover, status, doctor, dashboard. Data commands require --root <absolute directory>; address commands also require --as <registered address>. pair: --codex <address> --claude <address>. send/reply: --body-file <UTF-8 file>; reply/done: --id <full message ID>. start runs in the receiving conversation, optional --batch-ms 0..120000. dashboard: optional --port <number>. Human output: --lang en|ko. Saved is not app delivery. Installation: install [--dir <directory>]; uninstall --dir <installed-directory> (from another portable copy).",
   "INVALID_ROOT": "Choose an explicit absolute data directory; drive roots are not allowed.",
   "INVALID_ADDRESS": "Use a lowercase address without path separators or reserved device names.",

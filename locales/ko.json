@@ -1,4 +1,10 @@
 {
+  "BOOTSTRAP_DOWNLOAD": "AI Relay용 검증된 Node.js를 다운로드합니다(최초 실행 시 한 번)...",
+  "BOOTSTRAP_PLATFORM": "이 실행기는 Windows x64만 지원합니다.",
+  "BOOTSTRAP_PATH": "런타임 경로는 링크나 정션일 수 없습니다.",
+  "BOOTSTRAP_HASH": "Node.js 해시가 일치하지 않습니다. 파일을 실행하거나 덮어쓰지 않았습니다.",
+  "BOOTSTRAP_FAILED": "Node.js 다운로드에 실패했습니다. 연결을 확인하고 relay.cmd를 다시 실행하거나 Node가 포함된 ZIP을 사용하세요.",
+  "BOOTSTRAP_LOCK": "다른 런타임 다운로드가 진행 중입니다. 완료된 뒤 다시 실행하세요.",
   "HELP": "로컬 AI 협업 중계 시험판. 명령: pair, send, reply, inbox, done, start, stop, recover, status, doctor, dashboard. 데이터 명령: --root <절대 경로>; 주소 명령: --as <등록 주소>. pair: --codex <주소> --claude <주소>. send/reply: --body-file <UTF-8 파일>; reply/done: --id <전체 우편 ID>. start는 수신 대화 안에서 실행하며 --batch-ms 0..120000으로 묶음 시간을 설정합니다. dashboard는 --port를 선택할 수 있습니다. --lang en|ko. 저장 성공과 앱 전달은 다릅니다. 설치: install [--dir <폴더>]; 제거: 다른 portable 사본에서 uninstall --dir <설치 폴더>.",
   "INVALID_ROOT": "저장 폴더의 절대 경로를 지정하세요. 드라이브 루트는 사용할 수 없습니다.",
   "INVALID_ADDRESS": "경로 구분자와 예약 장치명이 없는 소문자 주소를 사용하세요.",

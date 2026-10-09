@@ -7,10 +7,11 @@ import { absoluteRoot, ownedPath } from '../lib/storage.mjs';
 import { RelayError } from '../lib/errors.mjs';
 
 const SOURCE = fileURLToPath(new URL('../', import.meta.url));
-const NODE_HASH = '63c259c81e5d472b5f11c8d506070130cb04a1ecf84b80377a34ed6ec9048088';
-const LICENSE_HASH = '4573185d56580da2b890ba34a85a409257640f1c5632eade4300137266194d18';
+const RUNTIME = JSON.parse(await fs.readFile(new URL('./node-runtime.json', import.meta.url), 'utf8'));
+const NODE_HASH = RUNTIME.sha256;
+const LICENSE_HASH = RUNTIME.licenseSha256;
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-const ALLOW = ['bin', 'lib', 'locales', 'third-party', 'scripts/acceptance.mjs', 'relay.cmd', 'package.json', 'LICENSE', 'README.md', 'README.ko.md', 'README.ja.md', 'docs/usage.md', 'docs/usage.ko.md', 'PROVENANCE.md', 'SECURITY.md', 'SUPPORT.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'PREVIEW-CHECKLIST.md'];
+const ALLOW = ['bin', 'lib', 'locales', 'third-party', 'scripts/acceptance.mjs', 'scripts/bootstrap-node.ps1', 'scripts/node-runtime.json', 'relay.cmd', 'package.json', 'LICENSE', 'README.md', 'README.ko.md', 'README.ja.md', 'docs/usage.md', 'docs/usage.ko.md', 'PROVENANCE.md', 'SECURITY.md', 'SUPPORT.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'PREVIEW-CHECKLIST.md'];
 
 // Fixed timestamps, sort order and compression level; ZIP32 only, no current path or wall-clock metadata.
 function zip(entries) {
@@ -51,7 +52,7 @@ export async function buildPreview({ outDir, runtime }) {
   entries.push(['runtime/node.exe', node]); entries.sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0);
   const packageInfo = JSON.parse(await fs.readFile(path.join(SOURCE, 'package.json'), 'utf8'));
   const manifest = { schemaVersion: 1, version: packageInfo.version, platform: 'win-x64', privatePreview: false, license: packageInfo.license,
-    runtime: { version: '24.14.0', source: 'https://nodejs.org/download/release/v24.14.0/win-x64/node.exe', sha256: NODE_HASH },
+    runtime: { version: RUNTIME.version, source: RUNTIME.url, sha256: NODE_HASH },
     files: Object.fromEntries(entries.map(([name, bytes]) => [name, sha(bytes)])) };
   entries.push(['manifest.json', Buffer.from(JSON.stringify(manifest, null, 2) + '\n')]); entries.sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0);
   const bytes = zip(entries), filename = `ai-relay-${packageInfo.version}-win-x64.zip`;

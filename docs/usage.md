@@ -4,7 +4,9 @@
 
 ## From Git
 
-Install Git and Node.js 24.14.0, then run `git clone https://github.com/LeeJuls/ai-relay.git`, enter `ai-relay`, and run `relay.cmd help`. No npm install is required. Continue below with address pairing and own-chat registration; the source checkout does not require extraction. The optional `install`/`uninstall` commands are for packaged ZIP copies, not the source checkout. Claude Desktop uses its Code tab (Claude Code) for this connection.
+Install Git, then run `git clone https://github.com/LeeJuls/ai-relay.git`, enter `ai-relay`, and run `relay.cmd help`. The launcher reuses installed Node.js 24.14.0 or later in the 24.x series. If unavailable, it downloads the pinned 24.14.0 executable from nodejs.org, checks SHA256 before execution, and stores it in the checkout's ignored `runtime/` folder. The first download needs internet; subsequent runs reuse it. No administrator rights, PATH change or npm install is required. Failed or mismatched downloads are not executed. A corrupt existing runtime is preserved and rejected; inspect it before manually removing it and trying again.
+
+Continue below with address pairing and own-chat registration. The optional `install`/`uninstall` commands are for packaged ZIP copies. Claude Desktop uses its Code tab (Claude Code). The launcher uses Windows PowerShell with a process-only execution-policy flag; it does not persist a policy change or override Group Policy restrictions.
 
 ## From ZIP
 

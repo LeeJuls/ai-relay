@@ -1,4 +1,5 @@
 node_modules/
+runtime/
 dist/
 *.log
 *.tmp

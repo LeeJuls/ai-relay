@@ -7,7 +7,7 @@
 
 ## 시작하기
 
-Git과 Node.js 24.14.0이 설치돼 있다면:
+Git만 설치돼 있다면:
 
 ```powershell
 git clone https://github.com/LeeJuls/ai-relay.git
@@ -15,7 +15,7 @@ cd ai-relay
 .\relay.cmd help --lang ko
 ```
 
-또는 Node.js가 포함된 [Windows ZIP](https://github.com/LeeJuls/ai-relay/releases)을 받아 압축을 풀면 됩니다. Git으로 실행할 때 ZIP은 필요 없습니다.
+`relay.cmd`가 호환되는 Node.js를 찾아 사용하고, 없으면 최초 실행 때 검증된 파일을 자동 다운로드합니다. 시스템 설치는 필요 없습니다. 인터넷 없이 실행하려면 Node.js가 포함된 [Windows ZIP](https://github.com/LeeJuls/ai-relay/releases)을 사용하세요.
 
 [설치 가이드](docs/usage.ko.md)에 따라 각 수신 대화 안에서 도우미를 등록하세요. 별도 npm 설치는 필요 없습니다.
 

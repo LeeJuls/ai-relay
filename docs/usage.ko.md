@@ -4,7 +4,9 @@
 
 ## Git으로 실행
 
-Git과 Node.js 24.14.0을 설치하고 `git clone https://github.com/LeeJuls/ai-relay.git`으로 받은 다음, `ai-relay` 폴더에서 `relay.cmd help --lang ko`를 실행하세요. 별도 npm 설치나 ZIP 압축 해제는 필요 없습니다. 아래의 주소 등록·각 대화 도우미 등록을 이어서 진행합니다. 선택적 `install`·`uninstall` 명령은 ZIP 배포본용이며 소스 폴더에는 필요 없습니다. Claude 데스크톱에서는 Code 탭(Claude Code)을 사용합니다.
+Git으로 `git clone https://github.com/LeeJuls/ai-relay.git`을 실행한 다음, `ai-relay` 폴더에서 `relay.cmd help --lang ko`를 실행하세요. 설치된 Node.js 24.x 중 24.14.0 이상이면 재사용합니다. 없으면 nodejs.org에서 고정된 24.14.0 실행 파일을 내려받아 SHA256을 검증하고, Git에서 제외된 `runtime/` 폴더에 저장합니다. 첫 다운로드만 인터넷이 필요하며 이후에는 재사용합니다. 관리자 권한·PATH 변경·npm 설치는 필요 없습니다. 다운로드 실패·해시 불일치 파일은 실행하지 않습니다. 기존 런타임이 손상되면 보존하고 실행을 거절하므로, 파일을 확인한 뒤 수동으로 제거하고 다시 실행하세요.
+
+아래의 주소 등록·각 대화 도우미 등록을 이어서 진행합니다. 선택적 `install`·`uninstall` 명령은 ZIP 배포본용입니다. Claude 데스크톱에서는 Code 탭(Claude Code)을 사용합니다. 실행기는 Windows PowerShell에 해당 프로세스에만 적용되는 실행 정책 옵션을 사용합니다. 시스템 정책을 영구 변경하거나 조직의 그룹 정책 제한을 우회하지 않습니다.
 
 ## ZIP으로 실행
 

@@ -1,8 +1,4 @@
 @echo off
 setlocal
-if exist "%~dp0runtime\node.exe" (
-  "%~dp0runtime\node.exe" "%~dp0bin\relay.mjs" %*
-) else (
-  node "%~dp0bin\relay.mjs" %*
-)
+"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\bootstrap-node.ps1" %*
 exit /b %errorlevel%

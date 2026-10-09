@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased — Astra review corrections
+## Unreleased
+
+- Add first-run Node.js detection and verified local download for Git checkouts, with failure cleanup and concurrent-download protection.
+- Share pinned runtime metadata between the launcher and ZIP builder; update the English, Korean and Japanese setup instructions.
 
 - Prevent delivery of questions archived by concurrent done/reply before claiming; keep the app transport outside the writer lock.
 - Add conservative dead-global-writer recovery through the existing recover command, with concurrent recovery/acquisition protection.

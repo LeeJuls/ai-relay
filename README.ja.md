@@ -7,7 +7,7 @@
 
 ## はじめに
 
-Git と Node.js 24.14.0 がインストール済みの場合：
+Git がインストール済みの場合：
 
 ```powershell
 git clone https://github.com/LeeJuls/ai-relay.git
@@ -15,7 +15,7 @@ cd ai-relay
 .\relay.cmd help
 ```
 
-Node.js 同梱の [Windows ZIP](https://github.com/LeeJuls/ai-relay/releases)を展開して使うこともできます。Git から実行する場合、ZIP は不要です。
+`relay.cmd` は対応する Node.js を使用し、なければ初回に検証済みのファイルを自動ダウンロードします。システムへのインストールは不要です。オフラインでは Node.js 同梱の [Windows ZIP](https://github.com/LeeJuls/ai-relay/releases)を利用できます。
 
 [設定ガイド（英語）](docs/usage.md)に従い、各受信側の会話内でヘルパーを登録してください。npm install は不要です。
 

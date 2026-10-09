@@ -7,7 +7,7 @@ The relay makes no model calls; receiving chats use their normal token allowance
 
 ## Get started
 
-With Git and Node.js 24.14.0 installed:
+With Git installed:
 
 ```powershell
 git clone https://github.com/LeeJuls/ai-relay.git
@@ -15,7 +15,7 @@ cd ai-relay
 .\relay.cmd help
 ```
 
-Or extract the [Windows ZIP](https://github.com/LeeJuls/ai-relay/releases), which includes Node.js. ZIP is optional when running from Git.
+`relay.cmd` uses compatible Node.js if available; otherwise it downloads a verified copy on first run. No system installation is needed. The [Windows ZIP](https://github.com/LeeJuls/ai-relay/releases) includes Node.js for offline use.
 
 Register a helper inside each receiving chat using the [setup guide](docs/usage.md). No npm install is needed.
 

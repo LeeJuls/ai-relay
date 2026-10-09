@@ -6,7 +6,7 @@
   "description": "Local message relay for existing AI conversations; experimental Windows developer preview",
   "type": "module",
   "engines": {
-    "node": ">=24 <25"
+    "node": ">=24.14.0 <25"
   },
   "exports": "./lib/core.mjs",
   "bin": {
@@ -18,6 +18,8 @@
     "locales/",
     "third-party/",
     "relay.cmd",
+    "scripts/bootstrap-node.ps1",
+    "scripts/node-runtime.json",
     "README.md",
     "README.ko.md",
     "PROVENANCE.md",
