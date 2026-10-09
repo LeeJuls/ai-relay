@@ -70,7 +70,7 @@ Open the dashboard's returned loopback URL. It displays only receiver state and 
 .\relay.cmd recover --root $dataRoot --as codex-demo
 ```
 
-Stop addresses one exact running generation; it never kills all Node/app processes. Recover refuses a live PID and preserves all delivery claims. App restarts require new registration from the reopened receiving conversation. Unknown/uncertain IDs stay held across re-registration. The status dashboard stops with Ctrl+C.
+Stop addresses one exact running generation; it never kills all Node/app processes. Recover first releases a retained global writer lock only when its recorded PID is definitively absent, then handles the selected receiver lock. It refuses live or malformed ownership and preserves all mail and delivery claims. Concurrent recovery blocks new writers until it finishes. If an interrupted recovery leaves `.writer-recovery.lock`, stop all processes using that data root and inspect the gate before manually reconciling it; never delete a gate owned by a live or uncertain process. App restarts require new registration from the reopened receiving conversation. Unknown/uncertain IDs stay held across re-registration. The status dashboard stops with Ctrl+C.
 
 After stopping the installed helpers/dashboard, use the preserved external portable copy to run `relay.cmd uninstall --dir <installed-directory>`. Windows cannot remove the installed runtime while that same executable runs the uninstaller; removal from inside the target is refused. Removal verifies the installation marker, file hashes and absence of unknown files; changed installations are refused for manual inspection. Message data outside the install directory is always retained.
 
@@ -93,6 +93,6 @@ npm.cmd pack --dry-run --json --ignore-scripts
 node scripts/build-preview.mjs <absolute-output-directory> <official-Node-24.14.0-x64-node.exe>
 ```
 
-Runtime code is newly implemented with Node built-ins only. The ZIP builder pins the official Node binary/license hashes and excludes tests, personal mail/config/logs, app credentials, character assets and old helper code. Build twice into different empty output directories to verify reproducibility. The owner selected MIT for this tool; public repository and release publication are separate decisions. Do not publish this research workspace or its Git history.
+Runtime code is newly implemented with Node built-ins only. The ZIP builder pins the official Node binary/license hashes and excludes tests, personal mail/config/logs, app credentials, character assets and old helper code. Build twice into different empty output directories to verify reproducibility. The owner selected MIT for this tool; this tool is published at https://github.com/LeeJuls/ai-relay. Source updates and release uploads require the owner’s authorization. Research workspaces and their Git histories are excluded.
 
 API: registerPair, createClient (send/reply/inbox/done), createAdapter, openReceiver, deliveryStatus. Stable send --id returns an identical saved message on retries, even after archival; changed content conflicts. Partial reply-save/archive failure can be explicitly retried without another answer.

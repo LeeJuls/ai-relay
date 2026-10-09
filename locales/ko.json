@@ -53,5 +53,6 @@
   "INSTALL_IN_USE": "프로그램이 사용 중입니다. 도우미를 중지하고 다른 portable 사본에서 제거를 실행하세요.",
   "INSTALL_EXISTS": "설치 폴더가 이미 있어 덮어쓰지 않았습니다.",
   "INSTALL_MODIFIED": "파일·설치 표시·목록이 변경되었습니다. 폴더를 보존하고 확인해 주세요.",
-  "NOT_PACKAGED": "검증된 portable 배포본을 압축 해제한 곳에서 설치해 주세요."
+  "NOT_PACKAGED": "검증된 portable 배포본을 압축 해제한 곳에서 설치해 주세요.",
+  "CORRUPT_WRITER": "쓰기 프로세스의 잠금 정보가 손상되었거나 바뀌었습니다. 삭제하지 않고 보존했습니다."
 }

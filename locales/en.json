@@ -53,5 +53,6 @@
   "INSTALL_IN_USE": "The package is in use. Stop its helpers and run removal from another portable copy.",
   "INSTALL_EXISTS": "The install directory already exists; nothing was replaced.",
   "INSTALL_MODIFIED": "Installed files, marker or manifest differ. Preserve and inspect the directory.",
-  "NOT_PACKAGED": "Run installation from the extracted, verified portable preview."
+  "NOT_PACKAGED": "Run installation from the extracted, verified portable preview.",
+  "CORRUPT_WRITER": "Writer lock ownership is malformed or changed; it was preserved for inspection."
 }

@@ -1,6 +1,13 @@
 # Changelog
 
-## 0.1.0-preview.1 — private development candidate
+## Unreleased — Astra review corrections
+
+- Prevent delivery of questions archived by concurrent done/reply before claiming; keep the app transport outside the writer lock.
+- Add conservative dead-global-writer recovery through the existing recover command, with concurrent recovery/acquisition protection.
+- Preserve live/malformed locks and uncertain mail; localize writer-ownership errors.
+- Add real killed-writer and deterministic archival/acquisition race regressions.
+
+## 0.1.0-preview.1 — public experimental preview
 
 - Portable address pairs, verbatim UTF-8 mail, stable send/reply IDs and explicit archival.
 - Separate own-session Codex experimental pipe and Claude Code socket adapters.
@@ -8,4 +15,4 @@
 - Localized help/errors and read-only local status dashboard; no model polling.
 - Verified-runtime Windows portable packaging, installation/removal safeguards, and preview acceptance instructions.
 
-Owner selected MIT licensing with attribution on 2026-10-09. Pending release gates: new-product live two-way/restart tests, independent Windows installation, public repository/publication approval, and multiple-user preview results. No public release or production-helper migration has occurred.
+Owner selected MIT licensing with attribution on 2026-10-09. Pending release gates: new-product live two-way/restart tests, independent Windows installation, and multiple-user preview results. The MIT experimental preview is published at https://github.com/LeeJuls/ai-relay. No stable support claim or production-helper migration has occurred.

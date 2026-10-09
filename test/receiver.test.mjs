@@ -91,3 +91,71 @@ test('falsy JSON receipt values cannot resurrect delivered mail', async t => {
     assert.equal(posts, 0); assert.equal(await fs.readFile(file, 'utf8'), bytes);
   }
 });
+
+for (const action of ['done', 'reply']) {
+  test(`receiver excludes a concurrently ${action}-archived question from a mixed batch`, async t => {
+    const b = await paired(t);
+    const original = await b.cx.send({ body: 'already handled question' });
+    const remaining = await b.cx.send({ body: 'still pending question' });
+    const receiptFile = path.join(b.root, 'delivery', 'claude-demo', original.id + '.json');
+    let entered, release, paused = false;
+    const reached = new Promise(resolve => { entered = resolve; });
+    const resume = new Promise(resolve => { release = resolve; });
+    const io = Object.create(fs);
+    io.readFile = async (...args) => {
+      if (args[0] === receiptFile && !paused) { paused = true; entered(); await resume; }
+      return fs.readFile(...args);
+    };
+    const bodies = [];
+    const r = await open(t, b, mock(async body => {
+      bodies.push(body);
+      // Claiming must not hold the writer lock during the app's response.
+      await b.cx.send({ body: 'sent while transport is active', type: 'fyi' });
+      return { state: 'accepted' };
+    }), { io });
+    const tick = r.tick();
+    await reached;
+    try {
+      if (action === 'done') await b.cl.done(original.id);
+      else await b.cl.reply({ id: original.id, body: 'handled answer' });
+    } finally { release(); }
+    await tick;
+    assert.equal(bodies.length, 1);
+    assert.doesNotMatch(bodies[0], /already handled question/);
+    assert.match(bodies[0], /still pending question/);
+    await assert.rejects(fs.stat(receiptFile), { code: 'ENOENT' });
+    const accepted = JSON.parse(await fs.readFile(path.join(b.root, 'delivery', 'claude-demo', remaining.id + '.json')));
+    assert.equal(accepted.state, 'accepted');
+  });
+}
+
+test('receiver does not wake the app when its whole snapshot was already completed', async t => {
+  const b = await paired(t), sent = await b.cx.send({ body: 'handled before claim' });
+  let entered, release;
+  const reached = new Promise(resolve => { entered = resolve; });
+  const resume = new Promise(resolve => { release = resolve; });
+  const io = Object.create(fs);
+  let paused = false, posts = 0;
+  io.readFile = async (...args) => {
+    if (args[0] === path.join(b.root, 'delivery', 'claude-demo', sent.id + '.json') && !paused) {
+      paused = true; entered(); await resume;
+    }
+    return fs.readFile(...args);
+  };
+  const r = await open(t, b, mock(async () => { posts++; return { state: 'accepted' }; }), { io });
+  const tick = r.tick(); await reached;
+  try { await b.cl.done(sent.id); } finally { release(); }
+  await tick;
+  assert.equal(posts, 0);
+});
+
+test('claim contention waits for another tick without stopping or posting', async t => {
+  const b = await paired(t); await b.cx.send({ body: 'wait for writer' });
+  let posts = 0;
+  const r = await open(t, b, mock(async () => { posts++; return { state: 'accepted' }; }));
+  const writer = path.join(b.root, '.writer.lock');
+  await fs.writeFile(writer, JSON.stringify({ pid: process.pid, startedAt: new Date().toISOString() }));
+  try { await r.tick(); assert.equal(posts, 0); }
+  finally { await fs.unlink(writer); }
+  await r.tick(); assert.equal(posts, 1);
+});

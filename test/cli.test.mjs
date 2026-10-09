@@ -51,6 +51,18 @@ test('CLI requires an explicit data root and does not invent one', async t => {
   assert.deepEqual(await fs.readdir(container), []);
 });
 
+test('CLI recovery localizes malformed writer ownership without deleting it', async t => {
+  const { root, container } = await sandbox(t);
+  await ok(['pair', '--root', root, '--codex', 'codex-demo', '--claude', 'claude-demo'], container);
+  const writer = path.join(root, '.writer.lock'); await fs.writeFile(writer, '{}');
+  const out = await run(['recover', '--root', root, '--as', 'codex-demo', '--lang', 'ko'], container);
+  assert.equal(out.code, 2);
+  const report = JSON.parse(out.stderr);
+  assert.equal(report.error.code, 'CORRUPT_WRITER');
+  assert.match(report.error.message, /쓰기.*잠금/);
+  assert.equal(await fs.readFile(writer, 'utf8'), '{}');
+});
+
 test('CLI localizes human errors while retaining stable machine codes', async t => {
   const { container } = await sandbox(t);
   const en = await run(['inbox', '--as', 'codex-demo', '--lang', 'en'], container);
