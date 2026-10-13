@@ -1,4 +1,4 @@
-# Claude relay behavior port — local candidate
+# Claude relay behavior port — merged into main
 
 Owner-approved scope, 2026-10-13. Implemented in ai-relay's own architecture. The private relay is a behavior reference, not a dependency. No production chats or receiver registrations were changed; no model calls were made for transport/locks/measurement. One ASTRA whole-branch code review was used for implementation QA.
 
@@ -28,4 +28,4 @@ Owner-approved scope, 2026-10-13. Implemented in ai-relay's own architecture. Th
 
 All 10 in-scope items are covered (8 implemented, 2 already covered); 3 optional/security-boundary items are explicitly skipped. This proves synthetic transport and packaging, not compatibility with every live desktop app/version, exactly-once model effects, real editor integration, or measured token savings.
 
-Implementation lives on a local feature branch; commits use the owner's `[C]` prefix. A single private result record is sent after commit. Public push, release publication and switching production helpers require separate owner confirmation.
+Implementation commit `019821e` was fast-forwarded into main and pushed with owner approval on 2026-10-13. The single private result record was sent after implementation. Package version is `0.1.0-preview.2`; ZIP release publication and production-helper changes remain separate actions.

@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased
+## 0.1.0-preview.2 — 2026-10-13
+
+Git source update. Versioned ZIP release assets are published separately.
+
+- Batch deadlines use saved message time; accepted inline mail auto-archives with --keep-pending compatibility.
+- Auto-archived originals retain safe first replies; manual done and deterministic reply conflict rules remain final.
+- Zero-write Claude socket probes and explicit send-only policy.
+- Writer-guarded shared slots, stable notification outbox, FIFO wait and audit history; dashboard age/slot visibility.
+- Standalone deduplicated Claude/Codex turn-cost report and concise token-efficiency guidance.
 
 - Add first-run Node.js detection and verified local download for Git checkouts, with failure cleanup and concurrent-download protection.
 - Share pinned runtime metadata between the launcher and ZIP builder; update the English, Korean and Japanese setup instructions.
@@ -19,11 +27,3 @@
 - Verified-runtime Windows portable packaging, installation/removal safeguards, and preview acceptance instructions.
 
 Owner selected MIT licensing with attribution on 2026-10-09. Pending release gates: new-product live two-way/restart tests, independent Windows installation, and multiple-user preview results. The MIT experimental preview is published at https://github.com/LeeJuls/ai-relay. No stable support claim or production-helper migration has occurred.
-
-## Local port candidate — 2026-10-13 (not pushed)
-
-- Batch deadlines use saved message time; accepted inline mail auto-archives with --keep-pending compatibility.
-- Auto-archived originals retain safe first replies; manual done and deterministic reply conflict rules remain final.
-- Zero-write Claude socket probes and explicit send-only policy.
-- Writer-guarded shared slots, stable notification outbox, FIFO wait and audit history; dashboard age/slot visibility.
-- Standalone deduplicated Claude/Codex turn-cost report and concise token-efficiency guidance.
