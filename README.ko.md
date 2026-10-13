@@ -26,3 +26,5 @@ Windows x64 실험 시험판입니다. 앱 호환성과 외부 사용자 검증�
 [MIT](LICENSE): 사용·수정·재배포를 자유롭게 하세요. 저작권·라이선스 고지는 유지하고, 출처로 [LeeJuls](https://github.com/LeeJuls/ai-relay)를 남겨주세요.
 
 [사용 가이드](docs/usage.ko.md) · [지원 범위](SUPPORT.md) · [보안](SECURITY.md)
+
+[토큰 절약·공용 슬롯 안내](docs/token-efficiency.md)

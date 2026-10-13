@@ -26,3 +26,5 @@ Windows x64 向けの実験版です。アプリの互換性と外部ユーザ�
 [MIT](LICENSE)：使用・変更・再配布は自由です。著作権・ライセンス表示を保持し、出典として [LeeJuls](https://github.com/LeeJuls/ai-relay) を記載してください。
 
 [使用ガイド（英語）](docs/usage.md) · [対応環境（英語）](SUPPORT.md) · [セキュリティ（英語）](SECURITY.md)
+
+[トークン節約・共有リソース](docs/token-efficiency.md)

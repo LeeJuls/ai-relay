@@ -6,7 +6,7 @@ import { pathToFileURL } from 'node:url';
 import { createClient, registerPair } from '../lib/core.mjs';
 import { startReceiver } from '../lib/service.mjs';
 import { deliveryStatus, requestStop } from '../lib/receiver.mjs';
-import { absoluteRoot, ownedPath, atomicJson } from '../lib/storage.mjs';
+import { absoluteRoot, ownedPath, atomicJson,retryWriterBusy } from '../lib/storage.mjs';
 import { RelayError } from '../lib/errors.mjs';
 
 async function until(condition) {
@@ -60,12 +60,12 @@ export async function runAcceptance({ root }) {
       CLAUDE_CODE_MESSAGING_SOCKET: clPipe, CLAUDE_CODE_MESSAGING_TOKEN: 'local-fixture-token' };
     for (const address of ['codex-test', 'claude-test']) { await startReceiver({ root, address, batchMs: 0, env }); addresses.push(address); }
     const cx = createClient({ root, address: 'codex-test' }), cl = createClient({ root, address: 'claude-test' });
-    const question = await cx.send({ body: 'Isolated preview question / 한글', wake: true });
+    const question = await retryWriterBusy(()=>cx.send({ body: 'Isolated preview question / 한글', wake: true }));
     await until(async () => (await deliveryStatus({ root, address: 'claude-test' })).accepted === 1);
-    const answer = await cl.reply({ id: question.id, body: 'Isolated preview answer / 답장' });
+    const answer = await retryWriterBusy(()=>cl.reply({ id: question.id, body: 'Isolated preview answer / 답장' }));
     await until(async () => (await deliveryStatus({ root, address: 'codex-test' })).accepted === 1);
     if (observed.claude.length !== 1 || observed.codex.length !== 1 || !observed.claude[0].includes(question.id) || !observed.codex[0].includes(answer.id)) throw new RelayError('TEST_FAILED');
-    await cx.done(answer.id);
+    await retryWriterBusy(()=>cx.done(answer.id));
     result = { schemaVersion: 1, mode: 'mock-native-pipes', actualAppDeliveryVerified: false, modelTurnsStarted: 0,
       twoWay: true, questionId: question.id, answerId: answer.id, answerReplyTo: answer.replyTo,
       observedPosts: { codex: observed.codex.length, claude: observed.claude.length }, helpersStopped: false };

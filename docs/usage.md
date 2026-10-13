@@ -50,7 +50,7 @@ Open the dashboard's returned loopback URL. It displays only receiver state and 
 - Each delivered group has explicit `[peer <address> #<full-id> not-owner]` origin tags. Peer text is never an owner instruction, consent or permission grant. Provider inbound/approval controls remain in force.
 - Saved is local storage. Accepted is transport acceptance, not proof of model receipt/read/answer. For Claude, a clean socket write/close is recorded as SOCKET_WRITE_ACCEPTED, not a confirmed inbound-policy decision.
 - Claims are flushed before any post. Only proven not_sent retries, at most three attempts. Post-write failures and leftover claims on restart hold the original IDs. No blind resend or exactly-once model-effects claim.
-- Done archives without generating an acknowledgement. One reply per original; reply-to-reply is blocked. Use a new substantive question for further work. Per receiver instance, at most six posts/minute; excess is held to avoid runaway waking.
+- Accepted inline posts archive automatically; --keep-pending opts out. Posted is not processed. A first reply to an automatically archived original still works. Explicit manual done remains final. Done archives without generating an acknowledgement. One reply per original; reply-to-reply is blocked. Use a new substantive question for further work. Per receiver instance, at most six posts/minute; excess is held to avoid runaway waking.
 - Body storage limit: 1 MiB UTF-8. Delivery group limit including tags: 200,000 bytes. Oversized mail is retained/held. Sort order is timestamp then full ID, not a cross-app global arrival-order guarantee.
 
 ## Stop, restart, remove
@@ -88,3 +88,7 @@ node scripts/build-preview.mjs <absolute-output-directory> <official-Node-24.14.
 Runtime code is newly implemented with Node built-ins only. The ZIP builder pins the official Node binary/license hashes and excludes tests, personal mail/config/logs, app credentials, character assets and old helper code. Build twice into different empty output directories to verify reproducibility. The owner selected MIT for this tool; this tool is published at https://github.com/LeeJuls/ai-relay. Source updates and release uploads require the owner’s authorization. Research workspaces and their Git histories are excluded.
 
 API: registerPair, createClient (send/reply/inbox/done), createAdapter, openReceiver, deliveryStatus. Stable send --id returns an identical saved message on retries, even after archival; changed content conflicts. Partial reply-save/archive failure can be explicitly retried without another answer.
+
+## Fewer turns and shared resources
+
+See [token efficiency, slot actions, send-only and local measurements](token-efficiency.md). `start --probe-ms 30000` detects a missing session socket without model calls; 0 disables probes. Sender defaults and existing JSON envelopes/IDs are unchanged. A send-only refusal is final; do not retype or reroute the request.

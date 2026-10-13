@@ -16,6 +16,8 @@ test('preview ZIP is deterministic, checksum-bound, and runs with its own runtim
   const second = await buildPreview({ outDir: path.join(container, 'second'), runtime: process.execPath });
   assert.equal(first.sha256, second.sha256);
   assert.ok(first.entries.includes('runtime/node.exe')); assert.ok(first.entries.includes('third-party/NODE-LICENSE.txt'));
+  assert.ok(first.entries.includes('tools/turn-cost/report.mjs'));assert.ok(first.entries.includes('docs/token-efficiency.md'));
+  assert.equal(first.entries.includes('docs/claude-relay-port-plan.md'),false);
   assert.equal(first.entries.some(x => /test\/|collab\/|\.log$|config\.json$|receipts/i.test(x)), false);
   const target = path.join(container, '한글 portable');
   const quote = s => "'" + s.replaceAll("'", "''") + "'";

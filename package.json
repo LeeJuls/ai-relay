@@ -32,7 +32,9 @@
     "LICENSE",
     "README.ja.md",
     "docs/usage.md",
-    "docs/usage.ko.md"
+    "docs/usage.ko.md",
+    "docs/token-efficiency.md",
+    "tools/turn-cost/"
   ],
   "scripts": {
     "test": "node --test test/*.test.mjs",

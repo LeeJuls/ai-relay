@@ -57,9 +57,9 @@ test('normal messages batch until the deadline; question flushes the batch immed
   assert.equal(groups.length, 1); assert.match(groups[0], /normal one/); assert.match(groups[0], /normal two/); assert.match(groups[0], /urgent question/);
 });
 test('ordinary answer deadline flushes without a new mail event', async t => {
-  const b = await paired(t); let now = 100000, posts = 0;
+  const b = await paired(t); let now = Date.now(), posts = 0;
   const r = await open(t, b, mock(async () => { posts++; return { state: 'accepted' }; }), { now: () => now, batchMs: 100 });
-  await b.cx.send({ body: 'answer', type: 'answer' }); await r.tick(); now += 101; await r.tick(); assert.equal(posts, 1);
+  await b.cx.send({ body: 'answer', type: 'answer' }); await r.tick(); now = Date.now() + 101; await r.tick(); assert.equal(posts, 1);
 });
 test('a second receiver cannot claim the same address; provider mismatch is rejected', async t => {
   const b = await paired(t), { openReceiver } = await receiver();

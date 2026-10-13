@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import fs from 'node:fs/promises';
-import { createClient, registerPair } from '../lib/core.mjs';
+import { createClient, registerPair, setSendOnly } from '../lib/core.mjs';
 import { RelayError } from '../lib/errors.mjs';
 import { startReceiver, doctor } from '../lib/service.mjs';
 import { deliveryStatus, requestStop, recoverReceiverLock } from '../lib/receiver.mjs';
 import { openDashboard } from '../lib/dashboard.mjs';
 import { installPackage, uninstallPackage } from '../lib/installation.mjs';
+import * as slots from '../lib/slots.mjs';
+import {retryWriterBusy} from '../lib/storage.mjs';
 
 const argv = process.argv.slice(2);
 const hinted = argv[argv.indexOf('--lang') + 1];
@@ -18,7 +20,9 @@ const flags = {
   reply: ['root', 'as', 'id', 'body-file', 'type', 'wake', 'lang'],
   inbox: ['root', 'as', 'lang'],
   done: ['root', 'as', 'id', 'lang'],
-  start: ['root', 'as', 'batch-ms', 'lang'],
+  start: ['root', 'as', 'batch-ms', 'probe-ms','keep-pending','lang'],
+  'send-only':['root','as','off','lang'],
+  slot:['root','as','action','name','to','force','reason','timeout-ms','interval-ms','lines','lang'],
   stop: ['root', 'as', 'lang'],
   status: ['root', 'as', 'lang'],
   doctor: ['root', 'as', 'lang'],
@@ -36,7 +40,7 @@ function parse() {
   for (let i = 1; i < argv.length; i++) {
     const key = argv[i].startsWith('--') ? argv[i].slice(2) : '';
     if (!flags[command].includes(key) || Object.hasOwn(options, key)) throw new RelayError('INVALID_ARGS');
-    if (key === 'wake') { options[key] = true; continue; }
+    if (['wake','keep-pending','off','force'].includes(key)) { options[key] = true; continue; }
     const value = argv[++i];
     if (value === undefined || value.startsWith('--')) throw new RelayError('INVALID_ARGS');
     options[key] = value;
@@ -79,12 +83,24 @@ try {
       process.once('SIGINT', stop); process.once('SIGTERM', stop);
       await new Promise(resolve => process.once('beforeExit', resolve));
       result = { ok: true, state: 'dashboard_stopped' };
-    } else if (command === 'pair') {
+    } else if(command==='slot'){
+      const input={root:options.root,name:options.name,as:options.as,action:options.action,to:options.to,force:!!options.force,reason:options.reason};
+      if(options.action==='status')result={ok:true,now:await slots.list(input)};
+      else if(options.action==='history')result={ok:true,history:await slots.history({...input,lines:options.lines===undefined?20:Number(options.lines)}),now:await slots.list(input)};
+      else if(options.action==='wait'){
+        const controller=new AbortController(),cancel=()=>controller.abort();process.once('SIGINT',cancel);process.once('SIGTERM',cancel);
+        try{result=await slots.wait({...input,timeoutMs:options['timeout-ms']===undefined?240*60000:Number(options['timeout-ms']),intervalMs:options['interval-ms']===undefined?1000:Number(options['interval-ms']),signal:controller.signal});}
+        finally{process.off('SIGINT',cancel);process.off('SIGTERM',cancel);}
+      }else result=await slots.act(input);
+      // JSON includes the all-slot now snapshot on success, contention and timeout.
+      if(!result.ok)process.exitCode=result.timeout?3:2;
+    } else if(command==='send-only')result={ok:true,...await setSendOnly({root:options.root,address:options.as,enabled:!options.off})};
+    else if (command === 'pair') {
       const cfg = await registerPair({ root: options.root, codexAddress: options.codex, claudeAddress: options.claude });
       result = { ok: true, state: 'configured', addresses: Object.keys(cfg.addresses) };
     } else if (['start', 'stop', 'status', 'doctor', 'recover'].includes(command)) {
       const input = { root: options.root, address: options.as };
-      if (command === 'start') result = { ok: true, ...await startReceiver({ ...input, batchMs: options['batch-ms'] === undefined ? 120000 : Number(options['batch-ms']) }) };
+      if (command === 'start') result = { ok: true, ...await startReceiver({ ...input, batchMs: options['batch-ms'] === undefined ? 120000 : Number(options['batch-ms']),probeMs:options['probe-ms']===undefined?30000:Number(options['probe-ms']),keepPending:!!options['keep-pending'] }) };
       if (command === 'stop') result = { ok: true, ...await requestStop(input) };
       if (command === 'status') result = { ok: true, ...await deliveryStatus(input) };
       if (command === 'doctor') result = { ok: true, ...await doctor(input) };
@@ -92,12 +108,12 @@ try {
     } else {
       const client = createClient({ root: options.root, address: options.as });
       if (command === 'inbox') result = { ok: true, messages: await client.inbox() };
-      else if (command === 'done') result = { ok: true, ...await client.done(options.id) };
+      else if (command === 'done') result = { ok: true, ...await retryWriterBusy(()=>client.done(options.id)) };
       else {
         const input = { body: await readBody(options['body-file']), id: options.id, type: options.type, wake: options.wake };
-        const saved = command === 'send'
-          ? await client.send({ ...input, to: options.to, task: options.task })
-          : await client.reply(input);
+        const saved = await retryWriterBusy(()=>command === 'send'
+          ? client.send({ ...input, to: options.to, task: options.task })
+          : client.reply(input));
         result = { ok: true, state: 'saved', message: saved };
       }
     }

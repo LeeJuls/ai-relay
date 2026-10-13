@@ -25,4 +25,4 @@ Windows x64 experimental preview; app compatibility and independent-user testing
 
 [MIT](LICENSE): free to use, modify and redistribute. Keep copyright/license notices; please credit [LeeJuls](https://github.com/LeeJuls/ai-relay).
 
-[Usage guide](docs/usage.md) · [Compatibility](SUPPORT.md) · [Security](SECURITY.md)
+[Usage guide](docs/usage.md) · [Fewer turns & resource slots](docs/token-efficiency.md) · [Compatibility](SUPPORT.md) · [Security](SECURITY.md)

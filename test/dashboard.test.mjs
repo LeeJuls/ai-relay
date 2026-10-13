@@ -12,6 +12,8 @@ test('read-only dashboard is localized, bound to loopback, and exposes no messag
   const response = await fetch(dashboard.url + 'api/status'); assert.equal(response.status, 200);
   const data = await response.json(); assert.equal(data.addresses.length, 2);
   assert.equal(data.addresses.find(x => x.address === 'claude-demo').pending, 1);
+  assert.equal(typeof data.addresses.find(x=>x.address==='claude-demo').oldestPendingAgeMs,'number');
+  assert.deepEqual(data.slots,[]);
   assert.equal(JSON.stringify(data).includes('never expose private body'), false);
   assert.equal((await fetch(dashboard.url + 'api/status', { method: 'POST' })).status, 405);
   assert.equal((await fetch(dashboard.url + 'api/status', { headers: { Origin: 'https://other.example' } })).status, 403);
