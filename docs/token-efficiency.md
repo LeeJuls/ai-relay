@@ -1,6 +1,8 @@
 # Fewer turns, not shorter answers
 
-The relay makes no model calls. Every post may start a receiving chat turn, which uses that chat's current context. Batching reduces posts, not the work needed for a real review; no fixed savings are promised.
+**English** · [한국어](token-efficiency.ko.md) · [日本語](token-efficiency.ja.md)
+
+Ordinary relay makes no model calls. Every post may start a receiving chat turn, which uses that chat's current context. Batching reduces posts, not review work; no fixed savings are promised. Optional [independent review](independent-review.md) runs a fresh subscription CLI task instead of waking the receiving working chat; its result may still wake the requester.
 
 1. At the end of a work bundle, consider a short handoff and a fresh chat when context is large (roughly 400k+). Do not reset during work or repeatedly reset small chats.
 2. Accepted inline mail is automatically archived. It is already delivered; **posted is not processed**. Do not re-read it with inbox or acknowledge it with done. Reply only if needed. `start --keep-pending` preserves the previous behavior.
@@ -43,7 +45,7 @@ Use `--provider codex` for rollout JSONL. Both window bounds are required; until
 
 ## Product boundaries
 
-IDs, reply links and JSON mail format are unchanged. The tool still connects reciprocal configured Codex/Claude pairs; arbitrary other-session injection and private review executors are not included. Oversized posts stay held and pending, never truncated or converted into a broken source-file link. Accepted-but-unarchived messages reconcile without another post. Public state lives only under the chosen data root; private app runtime files are never opened by the dashboard.
+Normal IDs, reply links and JSON mail format are unchanged. The tool still connects reciprocal configured Codex/Claude pairs; arbitrary other-session injection and private runtime imports are not included. Explicit reviews add optional metadata and require both sides to be upgraded; review jobs live under the configured external jobRoot. Oversized posts stay held and pending, never truncated or converted into a broken source-file link. Accepted-but-unarchived messages reconcile without another post. The dashboard reads public data-root state, never private app runtime files.
 
 `reply` and `done` accept full IDs or unambiguous hexadecimal prefixes/suffixes of 6 or more characters. Ambiguity is an error; wire IDs and replyTo remain full 32-character values. New sends still require full IDs when an explicit ID is supplied.
 

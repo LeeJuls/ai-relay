@@ -74,6 +74,25 @@ test('CLI localizes human errors while retaining stable machine codes', async t 
   assert.match(b.message, /[가-힣]/);
 });
 
+test('CLI offers explicit review modes, Japanese errors and opt-in configuration', async t => {
+  const { root, container } = await sandbox(t), body = path.join(container, 'body.txt'), file = path.join(container, 'review.json');
+  await fs.writeFile(body, 'Review the one supplied fact');
+  await ok(['pair', '--root', root, '--codex', 'codex-demo', '--claude', 'claude-demo'], container);
+  const base = ['send', '--root', root, '--as', 'codex-demo', '--body-file', body];
+  const refused = await run([...base, '--mode', 'review', '--lang', 'ja'], container);
+  assert.equal(JSON.parse(refused.stderr).error.code, 'REVIEW_DISABLED'); assert.match(refused.stderr, /レビュー/);
+  await fs.writeFile(file, JSON.stringify({ cli: process.execPath, model: 'test-model', jobRoot: path.join(container, 'jobs'), evidenceDirs: [], deadlineMs: 180000 }));
+  await ok(['review-config', '--root', root, '--as', 'claude-demo', '--config-file', file], container);
+  const sent = await ok([...base, '--mode', 'review'], container);
+  assert.equal(sent.message.review.mode, 'review');
+  const bad = await run([...base, '--previous', sent.message.id], container); assert.equal(bad.code, 2);
+  const f = await ok([...base, '--mode', 'followup', '--previous', sent.message.id], container);
+  assert.equal(f.message.review.previousId, sent.message.id);
+  assert.deepEqual((await ok(['review-status', '--root', root, '--as', 'claude-demo'], container)).reviews, []);
+  await ok(['review-config', '--root', root, '--as', 'claude-demo', '--off'], container);
+  const help = await run(['help', '--lang', 'ja'], container); assert.equal(help.code, 0); assert.match(help.stdout, /独立レビュー/);
+});
+
 test('CLI rejects unknown flags instead of silently choosing a route', async t => {
   const { root, container } = await sandbox(t);
   const out = await run(['pair', '--root', root, '--codex', 'codex-demo', '--claude', 'claude-demo', '--model', 'surprise'], container);

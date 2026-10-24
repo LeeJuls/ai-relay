@@ -8,15 +8,16 @@ import { openDashboard } from '../lib/dashboard.mjs';
 import { installPackage, uninstallPackage } from '../lib/installation.mjs';
 import * as slots from '../lib/slots.mjs';
 import {retryWriterBusy} from '../lib/storage.mjs';
+import { configureReview, reviewStatus, reviewExecutionStatus } from '../lib/review.mjs';
 
 const argv = process.argv.slice(2);
 const hinted = argv[argv.indexOf('--lang') + 1];
-const language = ['en', 'ko'].includes(hinted) ? hinted : 'en';
+const language = ['en', 'ko', 'ja'].includes(hinted) ? hinted : 'en';
 const strings = JSON.parse(await fs.readFile(new URL(`../locales/${language}.json`, import.meta.url), 'utf8'));
 
 const flags = {
   pair: ['root', 'codex', 'claude', 'lang'],
-  send: ['root', 'as', 'to', 'body-file', 'type', 'task', 'id', 'wake', 'lang'],
+  send: ['root', 'as', 'to', 'body-file', 'type', 'task', 'id', 'wake', 'lang', 'mode', 'previous'],
   reply: ['root', 'as', 'id', 'body-file', 'type', 'wake', 'lang'],
   inbox: ['root', 'as', 'lang'],
   done: ['root', 'as', 'id', 'lang'],
@@ -27,6 +28,8 @@ const flags = {
   status: ['root', 'as', 'lang'],
   doctor: ['root', 'as', 'lang'],
   recover: ['root', 'as', 'lang'],
+  'review-config': ['root', 'as', 'config-file', 'off', 'lang'],
+  'review-status': ['root', 'as', 'lang'],
   dashboard: ['root', 'port', 'lang'],
   install: ['dir', 'lang'],
   uninstall: ['dir', 'lang'],
@@ -45,7 +48,9 @@ function parse() {
     if (value === undefined || value.startsWith('--')) throw new RelayError('INVALID_ARGS');
     options[key] = value;
   }
-  if (options.lang !== undefined && !['en', 'ko'].includes(options.lang)) throw new RelayError('INVALID_ARGS');
+  if (options.lang !== undefined && !['en', 'ko', 'ja'].includes(options.lang)) throw new RelayError('INVALID_ARGS');
+  if (options.mode !== undefined && !['review', 'followup'].includes(options.mode)) throw new RelayError('INVALID_ARGS');
+  if (options.previous !== undefined && options.mode !== 'followup') throw new RelayError('INVALID_ARGS');
   return { command, options };
 }
 
@@ -94,7 +99,11 @@ try {
       }else result=await slots.act(input);
       // JSON includes the all-slot now snapshot on success, contention and timeout.
       if(!result.ok)process.exitCode=result.timeout?3:2;
-    } else if(command==='send-only')result={ok:true,...await setSendOnly({root:options.root,address:options.as,enabled:!options.off})};
+    } else if(command==='review-config') {
+      if (!!options.off === !!options['config-file']) throw new RelayError('INVALID_ARGS');
+      result = { ok: true, ...await configureReview({ root: options.root, address: options.as, config: options.off ? false : JSON.parse(await readBody(options['config-file'])) }) };
+    } else if(command==='review-status')result={ok:true,reviews:await reviewStatus({root:options.root,address:options.as}),execution:await reviewExecutionStatus({root:options.root,address:options.as})};
+    else if(command==='send-only')result={ok:true,...await setSendOnly({root:options.root,address:options.as,enabled:!options.off})};
     else if (command === 'pair') {
       const cfg = await registerPair({ root: options.root, codexAddress: options.codex, claudeAddress: options.claude });
       result = { ok: true, state: 'configured', addresses: Object.keys(cfg.addresses) };
@@ -112,7 +121,7 @@ try {
       else {
         const input = { body: await readBody(options['body-file']), id: options.id, type: options.type, wake: options.wake };
         const saved = await retryWriterBusy(()=>command === 'send'
-          ? client.send({ ...input, to: options.to, task: options.task })
+          ? client.send({ ...input, to: options.to, task: options.task, ...(options.mode ? { review: { mode: options.mode, ...(options.previous ? { previousId: options.previous } : {}) } } : {}) })
           : client.reply(input));
         result = { ok: true, state: 'saved', message: saved };
       }

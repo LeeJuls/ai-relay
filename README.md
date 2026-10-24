@@ -3,11 +3,19 @@
 **English** · [한국어](README.ko.md) · [日本語](README.ja.md)
 
 Connect **Claude Desktop (Code tab) and Codex Desktop** chats to exchange messages.
-The relay makes no model calls; receiving chats use their normal token allowance.
+Ordinary relay makes no model calls. Optional independent reviews use your signed-in CLI subscription; no API key is required.
 
 ## Latest update
 
-**0.1.0-preview.2 · 2026-10-13** — batched delivery and automatic filing, shared-resource slots, session health checks, and local turn-cost reports. [Changes](CHANGELOG.md). This is the Git version; ZIP releases are published separately.
+**0.1.0-preview.3 · 2026-10-25** — [independent review and focused followup](docs/independent-review.md), with saved results and duplicate-run protection. Existing mail still works. [Changes](CHANGELOG.md). Git version; ZIP releases are separate.
+
+| Before | Now (opt-in) |
+|---|---|
+| Review wakes a long working chat | Review starts with just the request and designated evidence |
+| Re-review needs earlier context | Followup carries only the previous conclusion, evidence and next action |
+| App acceptance does not prove completion | Review result and linked reply have separate durable status |
+
+Reviews still use tokens; faster replies or fixed savings are not guaranteed.
 
 ## Get started
 

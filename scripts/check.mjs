@@ -9,4 +9,6 @@ async function scan(folder){for(const entry of await fs.readdir(folder,{withFile
 for(const folder of ['bin','lib','scripts','tools'])await scan(path.join(root,folder));
 const en = JSON.parse(await fs.readFile(path.join(root, 'locales', 'en.json'))), ko = JSON.parse(await fs.readFile(path.join(root, 'locales', 'ko.json')));
 if (JSON.stringify(Object.keys(en).sort()) !== JSON.stringify(Object.keys(ko).sort())) throw Error('LOCALE_KEY_MISMATCH');
+const ja = JSON.parse(await fs.readFile(path.join(root, 'locales', 'ja.json')));
+if (JSON.stringify(Object.keys(en).sort()) !== JSON.stringify(Object.keys(ja).sort())) throw Error('LOCALE_KEY_MISMATCH');
 console.log(JSON.stringify({ syntaxErrors: 0, modulesChecked: checked, localeKeys: Object.keys(en).length }));

@@ -1,5 +1,9 @@
 # Source provenance and distribution status
 
+## 2026-10-25 independent-review port
+
+The owner approved bringing the local independent-review behavior into this public product. The new public modules are authored against ai-relay's own message, storage and receiver contracts, using the private runner and its failure lessons as implementation references. No private module is imported or distributed; no personal executable path, real route, mailbox, credential or transcript is shipped. Native CLI flags and structured-output contracts remain provider-owned interfaces. The review feature is opt-in and separate from the unchanged ordinary transport; evidence-scope and live-deployment limits are documented in all three languages. Historical exclusions below describe their corresponding releases, not preview.3.
+
 This directory contains a new implementation authored for the owner's local relay project. It does not copy or import the previous Claude relay, Codex helper, app binaries, or third-party dependencies. Design inputs were the owner's approved message contracts and recorded failure lessons: explicit roots, configured peers, durable publication, bounded Windows rename retries, and preserved reply IDs.
 
 No license grant for the previous repositories was established by their source inventory. No code from those sources is included in this package. This statement records implementation provenance, not a legal determination about all future redistribution rights.

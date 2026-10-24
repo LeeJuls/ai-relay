@@ -1,5 +1,7 @@
 # Security and incident handling
 
+Optional independent reviews use subscription-authenticated native CLIs with read-only settings, no automatic API fallback, no session resume, and durable execution claims. Evidence-directory scope is a reviewer instruction, not an OS-enforced read allowlist. Job prompts/logs/results are sensitive local data outside the mail root. A failed termination request or interrupted claim must be inspected, not bypassed with another ID. See the full [review boundary](docs/independent-review.md), also in [Korean](docs/independent-review.ko.md) and [Japanese](docs/independent-review.ja.md).
+
 Experimental preview: report sensitive security issues to the maintainer privately. Do not post tokens, session pipe paths, message bodies, or full transcripts in a public issue.
 
 The relay runs as the current OS user. Other processes with that user's filesystem permissions can change local configuration and envelopes; this is not hostile-process isolation. Use a private local user-data directory, not a cloud/network share. Only configured reciprocal peers are routed. Sender identity is a bound local client, not proof of a different OS user.

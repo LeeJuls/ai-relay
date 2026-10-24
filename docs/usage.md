@@ -1,6 +1,6 @@
 # Usage guide
 
-[English](../README.md) · [한국어](../README.ko.md) · [日本語](../README.ja.md)
+**English** · [한국어](usage.ko.md) · [日本語](usage.ja.md)
 
 ## From Git
 
@@ -70,9 +70,9 @@ After stopping the installed helpers/dashboard, use the preserved external porta
 
 Core commands require an explicit absolute local data root (never a drive root) and --as bound address. Pairs are reciprocal; non-peer destinations and payload sender overrides are rejected. Internal symlinks/junctions are refused. Local --as is routing binding, not OS authentication: other programs with this user's data-folder access can tamper with files. Use a private, local user-data directory; cloud/network shares are unsupported.
 
-The install location defaults to the current user's LocalAppData. It is distinct from the mail root. Auto-start, unattended credential discovery, app-policy changes, cloud relays and /review model execution are not part of this preview.
+The install location defaults to the current user's LocalAppData. It is distinct from the mail root. Auto-start, unattended credential discovery, app-policy changes and cloud relays are not included. Optional [independent reviews](independent-review.md) require explicit setup; normal mail never implicitly runs them.
 
-JSON stdout; stable localized error codes on stderr, exit 2. --lang en|ko changes human help/errors. Native file watches and a one-second missed-event/batch-deadline rescan make no AI calls. This is not an AI timer or a five-minute polling conversation.
+JSON stdout; stable localized error codes on stderr, exit 2. --lang en|ko|ja changes human help/errors. Native file watches and a one-second missed-event/batch-deadline rescan make no AI calls. This is not an AI timer or a five-minute polling conversation.
 
 ## Development and release
 
@@ -92,3 +92,7 @@ API: registerPair, createClient (send/reply/inbox/done), createAdapter, openRece
 ## Fewer turns and shared resources
 
 See [token efficiency, slot actions, send-only and local measurements](token-efficiency.md). `start --probe-ms 30000` detects a missing session socket without model calls; 0 disables probes. Sender defaults and existing JSON envelopes/IDs are unchanged. A send-only refusal is final; do not retype or reroute the request.
+
+## Optional independent review
+
+See [review setup and recovery](independent-review.md). `review-config` enables each receiving address; `send --mode review` opts in per request. `--mode followup --previous <request-full-id>` carries the bounded same-task result. `review-status` distinguishes review work from app acceptance. Upgrade both sides before using review metadata; stop and re-register old workers from their own chats. Rollback: disable review, preserve uncertain jobs and continue normal mail. Do not downgrade with review requests pending: old receivers do not understand their optional metadata.

@@ -92,7 +92,7 @@ if ($MyInvocation.InvocationName -ne '.') {
     $root = Split-Path -Parent $PSScriptRoot
     $language = 'en'
     for ($i = 0; $i -lt ($RelayArgs.Count - 1); $i++) {
-        if ($RelayArgs[$i] -eq '--lang' -and $RelayArgs[$i + 1] -eq 'ko') { $language = 'ko' }
+        if ($RelayArgs[$i] -eq '--lang' -and $RelayArgs[$i + 1] -in @('ko', 'ja')) { $language = $RelayArgs[$i + 1] }
     }
     try {
         $messages = Get-Content -LiteralPath (Join-Path $root "locales/$language.json") -Raw -Encoding UTF8 | ConvertFrom-Json

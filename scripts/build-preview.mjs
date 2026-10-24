@@ -11,7 +11,7 @@ const RUNTIME = JSON.parse(await fs.readFile(new URL('./node-runtime.json', impo
 const NODE_HASH = RUNTIME.sha256;
 const LICENSE_HASH = RUNTIME.licenseSha256;
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-const ALLOW = ['bin', 'lib', 'locales', 'tools/turn-cost', 'third-party', 'scripts/acceptance.mjs', 'scripts/bootstrap-node.ps1', 'scripts/node-runtime.json', 'relay.cmd', 'package.json', 'LICENSE', 'README.md', 'README.ko.md', 'README.ja.md', 'docs/usage.md', 'docs/usage.ko.md', 'docs/token-efficiency.md', 'PROVENANCE.md', 'SECURITY.md', 'SUPPORT.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'PREVIEW-CHECKLIST.md'];
+const ALLOW = ['bin', 'lib', 'locales', 'tools/turn-cost', 'third-party', 'scripts/acceptance.mjs', 'scripts/bootstrap-node.ps1', 'scripts/node-runtime.json', 'relay.cmd', 'package.json', 'LICENSE', 'README.md', 'README.ko.md', 'README.ja.md', 'docs/usage.md', 'docs/usage.ko.md', 'docs/token-efficiency.md', 'PROVENANCE.md', 'SECURITY.md', 'SUPPORT.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'PREVIEW-CHECKLIST.md', 'CHANGELOG.ko.md', 'CHANGELOG.ja.md', 'docs/usage.ja.md', 'docs/independent-review.md', 'docs/independent-review.ko.md', 'docs/independent-review.ja.md', 'docs/token-efficiency.ko.md', 'docs/token-efficiency.ja.md'];
 
 // Fixed timestamps, sort order and compression level; ZIP32 only, no current path or wall-clock metadata.
 function zip(entries) {

@@ -1,5 +1,20 @@
 # Changelog
 
+**English** · [한국어](CHANGELOG.ko.md) · [日本語](CHANGELOG.ja.md)
+
+## 0.1.0-preview.3 — 2026-10-25
+
+Git source update; no new ZIP release is implied.
+
+- Opt-in Claude/Codex independent CLI reviews using subscription login, explicit models and designated evidence. Normal mail remains compatible; no API-key fallback.
+- Same-task followup carries bounded conclusion/evidence/nextAction rather than resuming a conversation.
+- Content-bound execution claims, saved results, deterministic linked replies and separate review status. Interrupted/uncertain jobs hold instead of automatically running again.
+- Reviews run separately from ordinary mail. Failures normally send a blocked result; crash/storage uncertainty stays held for inspection.
+- EN/KO/JA before-and-after guidance and review instructions; Japanese help, errors, dashboard and launcher messages.
+- Batching, automatic archival, shared slots, send-only policy and turn-cost reports were **already covered** in preview.2 and are retained.
+
+Reviews consume subscription allowance. No fixed token savings, response-time improvement or production-readiness claim.
+
 ## 0.1.0-preview.2 — 2026-10-13
 
 Git source update. Versioned ZIP release assets are published separately.

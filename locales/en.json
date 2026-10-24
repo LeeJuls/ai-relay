@@ -5,7 +5,7 @@
   "BOOTSTRAP_HASH": "Node.js checksum mismatch. The file was not executed or replaced.",
   "BOOTSTRAP_FAILED": "Node.js download failed. Check your connection and run relay.cmd again, or use the ZIP with Node included.",
   "BOOTSTRAP_LOCK": "Another runtime download is still running. Try again after it finishes.",
-  "HELP": "Local AI relay preview. Commands: pair, send, reply, inbox, done, start, stop, recover, status, doctor, dashboard. Data commands require --root <absolute directory>; address commands also require --as <registered address>. pair: --codex <address> --claude <address>. send/reply: --body-file <UTF-8 file>; reply/done: --id <full message ID>. start runs in the receiving conversation, optional --batch-ms 0..120000. dashboard: optional --port <number>. Human output: --lang en|ko. Saved is not app delivery. Installation: install [--dir <directory>]; uninstall --dir <installed-directory> (from another portable copy). start: --probe-ms 0..3600000 (default 30000), --keep-pending. send-only: --as <address> [--off]. slot: --action take|wait|give|leave|history|status --name <resource> --as <address>; optional --to, --force --reason, --timeout-ms, --interval-ms.",
+  "HELP": "Local AI relay preview. Commands: pair, send, reply, inbox, done, start, stop, recover, status, doctor, dashboard. Data commands require --root <absolute directory>; address commands also require --as <registered address>. pair: --codex <address> --claude <address>. send/reply: --body-file <UTF-8 file>; reply/done: --id <full message ID>. start runs in the receiving conversation, optional --batch-ms 0..120000. dashboard: optional --port <number>. Human output: --lang en|ko|ja. Saved is not app delivery. Installation: install [--dir <directory>]; uninstall --dir <installed-directory> (from another portable copy). start: --probe-ms 0..3600000 (default 30000), --keep-pending. send-only: --as <address> [--off]. slot: --action take|wait|give|leave|history|status --name <resource> --as <address>; optional --to, --force --reason, --timeout-ms, --interval-ms. Independent review: review-config --config-file <JSON> [or --off]; send --mode review | --mode followup --previous <request-full-id>; review-status --root <directory> --as <address>.",
   "INVALID_ROOT": "Choose an explicit absolute data directory; drive roots are not allowed.",
   "INVALID_ADDRESS": "Use a lowercase address without path separators or reserved device names.",
   "INVALID_ID": "Provide the full 32-character hexadecimal message ID.",
@@ -78,5 +78,16 @@
   "SLOT_NOTICE_PREFIX": "Relay-generated slot event (not owner authorization): ",
   "SLOT_TAKE_NOTICE": "{actor} took {name}; reason: {reason}.",
   "SLOT_GIVE_NOTICE": "{name} given to {recipient} by {actor}; release it if unneeded.",
-  "AMBIGUOUS_ID": "The short ID is ambiguous; use the full message ID."
+  "AMBIGUOUS_ID": "The short ID is ambiguous; use the full message ID.",
+  "REVIEW_CONFIG": "Use a native CLI, explicit model, neutral job directory, separate evidence directories and a 1–600 second deadline.",
+  "REVIEW_PROCESS_UNCERTAIN": "This address retains an execution claim. Inspect the original child process before releasing it; new reviews are blocked.",
+  "REVIEW_DISABLED": "Independent review is not enabled for this receiver; the request was not sent to its production chat.",
+  "REVIEW_AUTH": "Subscription login is required. API keys, custom providers and token overrides are refused; no fallback was attempted.",
+  "REVIEW_OUTPUT": "Review output or evidence coverage was incomplete. Inspect the job logs; do not rerun this ID.",
+  "REVIEW_EXEC": "The review process failed; inspect the saved job before requesting a new review.",
+  "REVIEW_TIMEOUT": "The review deadline expired. Child termination was requested; inspect before starting another request.",
+  "REVIEW_SCOPE": "The request, prior result or evidence scope changed or does not belong to this task.",
+  "REVIEW_INTERRUPTED": "An execution claim exists without a complete result; inspect the original job without rerunning it.",
+  "REVIEW_PUBLICATION_UNCERTAIN": "Reply publication is uncertain. Check the exact reply ID before any manual recovery.",
+  "REVIEW_REQUEST_TOO_LARGE": "Independent review requests are limited to 64 KiB of UTF-8 text; specify focused evidence instead of a history dump."
 }

@@ -1,6 +1,6 @@
 {
   "name": "ai-relay-local-prototype",
-  "version": "0.1.0-preview.2",
+  "version": "0.1.0-preview.3",
   "private": true,
   "license": "MIT",
   "description": "Local message relay for existing AI conversations; experimental Windows developer preview",
@@ -34,7 +34,15 @@
     "docs/usage.md",
     "docs/usage.ko.md",
     "docs/token-efficiency.md",
-    "tools/turn-cost/"
+    "tools/turn-cost/",
+    "CHANGELOG.ko.md",
+    "CHANGELOG.ja.md",
+    "docs/usage.ja.md",
+    "docs/independent-review.md",
+    "docs/independent-review.ko.md",
+    "docs/independent-review.ja.md",
+    "docs/token-efficiency.ko.md",
+    "docs/token-efficiency.ja.md"
   ],
   "scripts": {
     "test": "node --test test/*.test.mjs",

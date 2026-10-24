@@ -17,6 +17,7 @@ test('preview ZIP is deterministic, checksum-bound, and runs with its own runtim
   assert.equal(first.sha256, second.sha256);
   assert.ok(first.entries.includes('runtime/node.exe')); assert.ok(first.entries.includes('third-party/NODE-LICENSE.txt'));
   assert.ok(first.entries.includes('tools/turn-cost/report.mjs'));assert.ok(first.entries.includes('docs/token-efficiency.md'));
+  for (const f of ['lib/review.mjs','lib/review-runner.mjs','locales/ja.json','docs/usage.ja.md','docs/independent-review.md','docs/independent-review.ko.md','docs/independent-review.ja.md','CHANGELOG.ko.md','CHANGELOG.ja.md']) assert.ok(first.entries.includes(f), f);
   assert.equal(first.entries.includes('docs/claude-relay-port-plan.md'),false);
   assert.equal(first.entries.some(x => /test\/|collab\/|\.log$|config\.json$|receipts/i.test(x)), false);
   const target = path.join(container, '한글 portable');

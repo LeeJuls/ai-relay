@@ -1,5 +1,7 @@
 # Compatibility and evidence boundary
 
+Preview.3 adds opt-in independent CLI reviews. The required native CLI flags are version-sensitive and unsupported versions fail closed. The normal app adapters are unchanged. See [review setup and limits](docs/independent-review.md), [한국어](docs/independent-review.ko.md), [日本語](docs/independent-review.ja.md). Isolated executor tests do not establish live desktop delivery or independent-PC compatibility.
+
 | Component | Implementation / observed evidence | Limit |
 | --- | --- | --- |
 | Windows x64 / Node 24.14.0 | Local source tests, isolated child processes, fixed-runtime package verification | Independent account/PC acceptance pending |
