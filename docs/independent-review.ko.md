@@ -1,5 +1,9 @@
 # 독립 검토
 
+생성 전에 기존 한도를 전달합니다. conclusion/nextAction은 JavaScript UTF-16 코드 단위 4000개 이하, evidence는 항목당 2000개 이하로 최대 20개입니다. 초과 출력은 `REVIEW_OUTPUT_LIMIT`로 거절하며 자동 축약하지 않습니다. Claude는 스키마 설명과 프롬프트, Codex는 스키마 제약도 사용합니다. 거절된 출력의 확인 가능한 CLI 사용량과 원문 로그도 보존합니다. `REVIEW_AUTH_REFRESH_BUSY`는 Claude가 보고한 OAuth 경합이며 자동 재시도·로그인 변경 없이 기록을 확인해야 합니다.
+
+일반 우편에서 답변·결정이 필요하면 `--type question`으로 즉시 전달하세요. `result`/`fyi`는 최대 120초 묶일 수 있습니다. `--wake`는 답변 전까지 다른 작업도 진행할 수 없다는 추가 표시입니다. CLI는 저장된 `message.type`·`message.wake`를 출력하며 본문으로 긴급도를 자동 판단하지 않습니다.
+
 [English](independent-review.md) · **한국어** · [日本語](independent-review.ja.md)
 
 일반 우편은 기존처럼 연결된 작업 대화로 전달합니다. `send --mode review`는 해당 수신 대화를 깨우지 않고, 새로운 CLI 문맥에서 읽기 전용 검토를 한 번 실행합니다. 연결된 `result` 답장은 일반 우편으로 돌아가므로 요청자 대화에서는 턴이 생길 수 있습니다. 전체 대화가 필요한 작업보다 작은 독립 질문에 적합합니다.

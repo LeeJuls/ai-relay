@@ -84,6 +84,8 @@
   "REVIEW_DISABLED": "Independent review is not enabled for this receiver; the request was not sent to its production chat.",
   "REVIEW_AUTH": "Subscription login is required. API keys, custom providers and token overrides are refused; no fallback was attempted.",
   "REVIEW_OUTPUT": "Review output or evidence coverage was incomplete. Inspect the job logs; do not rerun this ID.",
+  "REVIEW_OUTPUT_LIMIT": "Review fields exceeded the output contract. Raw output and available usage are retained; inspect the job without rerunning this ID.",
+  "REVIEW_AUTH_REFRESH_BUSY": "Claude reported a concurrent OAuth refresh. Inspect the saved job and wait for that refresh to finish; no automatic retry or login change was made.",
   "REVIEW_EXEC": "The review process failed; inspect the saved job before requesting a new review.",
   "REVIEW_TIMEOUT": "The review deadline expired. Child termination was requested; inspect before starting another request.",
   "REVIEW_SCOPE": "The request, prior result or evidence scope changed or does not belong to this task.",

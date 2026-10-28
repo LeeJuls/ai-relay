@@ -75,3 +75,91 @@ test('a failed termination reports execution uncertainty rather than releasing o
   const state = JSON.parse(await fs.readFile(path.join(r.jobDir, 'process.json')));
   assert.equal(state.processEnded, false); assert.equal(state.code, 'REVIEW_PROCESS_UNCERTAIN');
 });
+
+test('generation receives the existing validator bounds with provider-compatible schemas', async t => {
+  for (const provider of ['claude', 'codex']) {
+    const r = await request(t, provider); let suppliedPrompt = '';
+    await runReviewCli(r, { env: {}, authenticate: async () => {}, spawnProcess: (_, args) => {
+      const c = fakeChild();
+      c.stdin.on('data', b => { suppliedPrompt += b; });
+      c.stdin.once('finish', () => void (async () => {
+        const schema = JSON.parse(await fs.readFile(path.join(r.jobDir, 'schema.json')));
+        if (provider === 'codex') {
+          assert.equal(schema.properties.conclusion.maxLength, 4000);
+          assert.equal(schema.properties.evidence.maxItems, 20);
+          assert.equal(schema.properties.evidence.items.maxLength, 2000);
+          assert.equal(schema.properties.nextAction.maxLength, 4000);
+          await fs.writeFile(path.join(r.jobDir, 'output.json'), JSON.stringify(result));
+          c.stdout.write(JSON.stringify({ type: 'turn.completed', usage: {} }) + '\n');
+        } else {
+          const cliSchema = JSON.parse(args[args.indexOf('--json-schema') + 1]);
+          assert.deepEqual(cliSchema, schema);
+          assert.ok(!/"(?:maxLength|minLength|maxItems)"/.test(JSON.stringify(schema)));
+          assert.match(schema.properties.conclusion.description, /4000/);
+          c.stdout.write(JSON.stringify({ type: 'result', subtype: 'success', usage: {}, structured_output: result }));
+        }
+        c.emit('close', 0);
+      })()); return c;
+    } });
+    assert.match(suppliedPrompt, /4000/); assert.match(suppliedPrompt, /2000/);
+    assert.match(suppliedPrompt, /20/); assert.match(suppliedPrompt, /UTF-16/);
+    assert.match(suppliedPrompt, /blocked/i);
+    assert.equal(await fs.readFile(path.join(r.jobDir, 'prompt.txt'), 'utf8'), suppliedPrompt);
+  }
+  assert.equal(validateResult({ ...result, conclusion: 'x'.repeat(4000) }).conclusion.length, 4000);
+  assert.throws(() => validateResult({ ...result, conclusion: 'x'.repeat(4001) }), { code: 'REVIEW_OUTPUT_LIMIT' });
+});
+
+for (const provider of ['claude', 'codex']) test(`${provider} rejected output preserves raw logs and usage without retry`, async t => {
+  const r = await request(t, provider); let calls = 0;
+  const usage = { input_tokens: 319910, output_tokens: 14401 };
+  const oversized = { ...result, conclusion: 'x'.repeat(6798) };
+  await assert.rejects(runReviewCli(r, { env: {}, authenticate: async () => {}, spawnProcess: () => {
+    calls++; const c = fakeChild(); c.stdin.once('finish', () => void (async () => {
+      if (provider === 'claude') c.stdout.write(JSON.stringify({ type: 'result', subtype: 'success', usage, structured_output: oversized }));
+      else {
+        await fs.writeFile(path.join(r.jobDir, 'output.json'), JSON.stringify(oversized));
+        c.stdout.write(JSON.stringify({ type: 'turn.completed', usage }) + '\n');
+      }
+      c.emit('close', 0);
+    })()); return c;
+  } }), { code: 'REVIEW_OUTPUT_LIMIT' });
+  assert.equal(calls, 1);
+  const saved = JSON.parse(await fs.readFile(path.join(r.jobDir, 'usage.json')));
+  assert.deepEqual(saved.usage, provider === 'claude' ? usage : [usage]);
+  const state = JSON.parse(await fs.readFile(path.join(r.jobDir, 'process.json')));
+  assert.equal(state.phase, 'held'); assert.equal(state.code, 'REVIEW_OUTPUT_LIMIT');
+  assert.match(await fs.readFile(path.join(r.jobDir, 'stdout.log'), 'utf8'), /319910/);
+});
+
+test('nonzero OAuth contention is diagnosed and accounted, never retried or certified', async t => {
+  const r = await request(t); let calls = 0;
+  const payload = { type: 'result', subtype: 'error_during_execution', is_error: true,
+    result: 'another Claude Code process is refreshing it', usage: { input_tokens: 0 } };
+  await assert.rejects(runReviewCli(r, { env: {}, authenticate: async () => {}, spawnProcess: () => {
+    calls++; const c = fakeChild(); c.stdin.once('finish', () => { c.stdout.write(JSON.stringify(payload)); c.emit('close', 1); }); return c;
+  } }), { code: 'REVIEW_AUTH_REFRESH_BUSY' });
+  assert.equal(calls, 1);
+  assert.deepEqual(JSON.parse(await fs.readFile(path.join(r.jobDir, 'usage.json'))).usage, payload.usage);
+  const state = JSON.parse(await fs.readFile(path.join(r.jobDir, 'process.json')));
+  assert.equal(state.phase, 'held'); assert.equal(state.exitCode, 1);
+  assert.equal(state.code, 'REVIEW_AUTH_REFRESH_BUSY');
+  assert.deepEqual(JSON.parse(await fs.readFile(path.join(r.jobDir, 'stdout.log'))), payload);
+});
+
+for (const provider of ['claude', 'codex']) test(`${provider} nonzero exit rejects an otherwise valid verdict but retains usage`, async t => {
+  const r = await request(t, provider);
+  await assert.rejects(runReviewCli(r, { env: {}, authenticate: async () => {}, spawnProcess: () => {
+    const c = fakeChild(); c.stdin.once('finish', () => void (async () => {
+      if (provider === 'claude') c.stdout.write(JSON.stringify({ type: 'result', subtype: 'success', usage: { input_tokens: 17 }, structured_output: result }));
+      else {
+        await fs.writeFile(path.join(r.jobDir, 'output.json'), JSON.stringify(result));
+        c.stdout.write(JSON.stringify({ type: 'turn.completed', usage: { input_tokens: 17 } }) + '\n');
+      }
+      c.emit('close', 1);
+    })()); return c;
+  } }), { code: 'REVIEW_EXEC' });
+  assert.deepEqual(JSON.parse(await fs.readFile(path.join(r.jobDir, 'usage.json'))).usage,
+    provider === 'claude' ? { input_tokens: 17 } : [{ input_tokens: 17 }]);
+  assert.equal(JSON.parse(await fs.readFile(path.join(r.jobDir, 'process.json'))).phase, 'held');
+});

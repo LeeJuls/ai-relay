@@ -7,7 +7,7 @@ Ordinary relay makes no model calls. Optional independent reviews use your signe
 
 ## Latest update
 
-**0.1.0-preview.3 · 2026-10-25** — [independent review and focused followup](docs/independent-review.md), with saved results and duplicate-run protection. Existing mail still works. [Changes](CHANGELOG.md). Git version; ZIP releases are separate.
+**0.1.0-preview.4 · 2026-10-29** — [independent reviews](docs/independent-review.md) now receive output limits before generation, preserve usage on rejected output and identify Claude OAuth-refresh contention. Existing mail still works. [Changes](CHANGELOG.md). Git version; ZIP releases are separate.
 
 | Before | Now (opt-in) |
 |---|---|

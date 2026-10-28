@@ -6,6 +6,10 @@ Normal mail still goes to the paired working chat. `send --mode review` instead 
 
 ## Enable once per receiving address
 
+Reviews receive the existing bounds: conclusion/nextAction ≤4000 JavaScript UTF-16 code units; evidence ≤20 entries of ≤2000 each. Oversized output is rejected as `REVIEW_OUTPUT_LIMIT`, never silently shortened. Claude uses schema descriptions plus prompt rules; Codex also uses schema constraints. Available CLI usage and raw logs are retained even when output is rejected. `REVIEW_AUTH_REFRESH_BUSY` identifies Claude's reported OAuth contention, without retrying or changing login. Inspect the saved job before asking for a new review.
+
+For ordinary mail, use `--type question` when you need an answer or decision; it delivers immediately. `result`/`fyi` may batch up to 120 seconds. `--wake` additionally means you cannot continue until the answer. The CLI reports saved `message.type` and `message.wake`; prose never selects urgency automatically.
+
 Install the provider's CLI separately and sign in with your ChatGPT or Claude subscription. The relay does not install a CLI, change login or use an API-key fallback. Use a current native executable (`.exe` on Windows, not `.ps1`/`.cmd`). Older CLIs without the required flags fail closed. Subscription limits still apply.
 
 Create a UTF-8 `review.json`, replacing the example paths and model with your own. The model must be available on your account; there is no automatic substitution.

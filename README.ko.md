@@ -7,7 +7,7 @@
 
 ## 최근 업데이트
 
-**0.1.0-preview.3 · 2026-10-25** — [독립 검토·핵심만 이어 검토](docs/independent-review.ko.md), 결과 저장과 중복 실행 방지를 추가했습니다. 기존 일반 우편은 유지합니다. [변경 내역](CHANGELOG.ko.md). Git 기준 버전이며 ZIP 배포는 별도입니다.
+**0.1.0-preview.4 · 2026-10-29** — [독립 검토](docs/independent-review.ko.md)의 생성 전 출력 한도 안내, 거절된 결과의 사용량 보존, Claude OAuth 갱신 경합 진단을 개선했습니다. 기존 일반 우편은 유지합니다. [변경 내역](CHANGELOG.ko.md). Git 기준 버전이며 ZIP 배포는 별도입니다.
 
 | 기존 | 개선 후(선택 사용) |
 |---|---|

@@ -2,6 +2,15 @@
 
 **English** · [한국어](CHANGELOG.ko.md) · [日本語](CHANGELOG.ja.md)
 
+## 0.1.0-preview.4 — 2026-10-29
+
+- Independent reviews receive the existing field bounds before generation, with provider-compatible schemas. Oversized results remain rejected; findings are never automatically truncated.
+- Available CLI usage is saved before output rejection, including nonzero exits. Raw logs and held state remain inspectable.
+- Claude OAuth-refresh contention has a distinct diagnostic; no automatic retry or authentication change.
+- Send JSON already includes actual message `type` and `wake`; ordinary delivery, batching and duplicate-execution safeguards are retained.
+
+Local regression checks do not establish model compliance, token savings or a new live-app certification. No new ZIP release.
+
 ## 0.1.0-preview.3 — 2026-10-25
 
 Git source update; no new ZIP release is implied.

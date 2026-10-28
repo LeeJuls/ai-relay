@@ -31,12 +31,15 @@ test('developer CLI performs a real pair/send/inbox/reply/done exchange', async 
   assert.equal(pair.ok, true);
   const sent = await ok(['send', '--root', root, '--as', 'codex-demo', '--body-file', body, '--wake'], container);
   assert.equal(sent.state, 'saved');
+  assert.equal(sent.message.type, 'question');
+  assert.equal(sent.message.wake, true);
   assert.equal(sent.message.body, 'CLI 질문\r\nsecond line\n');
   const inbox = await ok(['inbox', '--root', root, '--as', 'claude-demo'], container);
   assert.equal(inbox.messages[0].id, sent.message.id);
   await fs.writeFile(body, 'CLI 답장');
   const answer = await ok(['reply', '--root', root, '--as', 'claude-demo', '--id', sent.message.id, '--body-file', body], container);
   assert.equal(answer.message.replyTo, sent.message.id);
+  assert.equal(answer.message.type, 'answer');
   assert.equal(answer.message.wake, true);
   const done = await ok(['done', '--root', root, '--as', 'codex-demo', '--id', answer.message.id], container);
   assert.equal(done.state, 'done');

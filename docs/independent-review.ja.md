@@ -1,5 +1,9 @@
 # 独立レビュー
 
+生成前に既存の上限を伝えます。conclusion/nextAction は JavaScript UTF-16 コード単位で各4000以下、evidence は各2000以下で最大20項目です。超過は `REVIEW_OUTPUT_LIMIT` として拒否し、自動で短縮しません。Claude はスキーマ説明とプロンプト、Codex はスキーマ制約も使います。拒否した出力でも取得できた CLI 使用量と原文ログを保持します。`REVIEW_AUTH_REFRESH_BUSY` は Claude が報告した OAuth 競合です。自動再試行やログイン変更をせず記録を確認してください。
+
+通常配送で回答・判断が必要なら `--type question` を使い即時配送します。`result`/`fyi` は最大120秒まとめられます。`--wake` は回答まで他の作業も進められない場合の追加指定です。CLI は保存済みの `message.type`・`message.wake` を出力し、本文から緊急度を自動判断しません。
+
 [English](independent-review.md) · [한국어](independent-review.ko.md) · **日本語**
 
 通常のメッセージは従来どおり対応する作業会話に届きます。`send --mode review` は受信側の作業会話を起動せず、新しい CLI の文脈で読み取り専用レビューを一度実行します。関連する `result` は通常のメッセージとして戻るため、依頼側の会話ではターンが発生する場合があります。会話全体を要する作業より、小さな独立した質問に適しています。
