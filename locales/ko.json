@@ -91,5 +91,6 @@
   "REVIEW_SCOPE": "요청·이전 결과·근거 범위가 변경됐거나 해당 작업에 속하지 않습니다.",
   "REVIEW_INTERRUPTED": "실행 기록은 있으나 완전한 결과가 없습니다. 재실행하지 말고 기존 작업을 확인하세요.",
   "REVIEW_PUBLICATION_UNCERTAIN": "답장 저장 여부가 불확실합니다. 수동 복구 전에 정확한 답장 ID를 확인하세요.",
-  "REVIEW_REQUEST_TOO_LARGE": "독립 검토 요청은 UTF-8 64 KiB까지입니다. 대화 전체 대신 필요한 근거를 지정하세요."
+  "REVIEW_REQUEST_TOO_LARGE": "독립 검토 요청은 UTF-8 64 KiB까지입니다. 대화 전체 대신 필요한 근거를 지정하세요.",
+  "DISCORD_REQUEST_QUEUED": "요청을 대기열에 넣었습니다."
 }

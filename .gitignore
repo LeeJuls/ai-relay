@@ -5,6 +5,7 @@ dist/
 *.tmp
 .env
 .env.*
+/.discord.local.json
 mail/
 data/
 coverage/

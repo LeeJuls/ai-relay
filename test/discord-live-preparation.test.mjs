@@ -1,0 +1,15 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs/promises';import path from 'node:path';import {sandbox} from './fixture.mjs';import {openAdapterRuntime} from '../tools/discord-adapter/runtime.mjs';import {config,epoch} from './discord-host-fixture.mjs';
+const mod=await import('../tools/discord-adapter/preparation.mjs').catch(()=>({}));
+async function stopped(t){const b=await sandbox(t);const r=await openAdapterRuntime({root:b.root,config,now:()=>epoch,session:{dispatch:async()=>assert.fail()},publisher:{publish:async()=>assert.fail()}});await r.stop();await r.close();return b;}
+test('local preparation supplies guide and ID while remaining stopped without external calls',async t=>{
+ const b=await stopped(t);let fetches=0;const original=globalThis.fetch;globalThis.fetch=()=>{fetches++;throw Error('must not call');};try{const p=await mod.prepareLiveTrial({root:b.root,config,now:()=>epoch});assert.equal(p.state,'prepared');assert.match(p.trial_id,/^[a-f0-9-]{36}$/);assert.equal(p.command,'ask');assert.equal(p.option,'text');assert.equal(p.window_ms,180000);assert.equal(p.max_requests,2);assert.equal(fetches,0);const l=JSON.parse(await fs.readFile(path.join(b.root,'discord-adapter.json'),'utf8'));assert.equal(l.stopped,true);assert.equal(l.tasks&&Object.keys(l.tasks).length,0);assert.equal(l.trials[0].started_at,null);assert.deepEqual(await mod.inspectLivePreparation({root:b.root,config,trial_id:p.trial_id,now:()=>epoch}),p);}finally{globalThis.fetch=original;}
+});
+test('start preflight rejects missing/wrong/expired ticket before any transport binding',async t=>{
+ const b=await stopped(t);await assert.rejects(mod.inspectLivePreparation({root:b.root,config,trial_id:'wrong',now:()=>epoch}));const p=await mod.prepareLiveTrial({root:b.root,config,now:()=>epoch});await assert.rejects(mod.inspectLivePreparation({root:b.root,config,trial_id:p.trial_id,now:()=>epoch+900001}),{code:'TRIAL_PREPARATION_EXPIRED'});
+});
+test('registered command validation ignores JSON key order without accepting widened defaults',()=>{
+ const c={id:config.command_id,application_id:config.application_id,guild_id:config.guild_id,type:1,name:config.command,default_member_permissions:'0',options:[{type:3,max_length:800,required:true,description:'A short non-sensitive question',name:'text'}]};assert.equal(mod.validateRegisteredCommand(c,config),c.id);assert.throws(()=>mod.validateRegisteredCommand({...c,default_member_permissions:null},config));assert.throws(()=>mod.validateRegisteredCommand({...c,options:[{...c.options[0],autocomplete:true}]},config));
+});
+test('prepare and start require distinct explicit launch forms',()=>{
+ assert.deepEqual(mod.parseLaunchArgs(['--prepare']),{mode:'--prepare'});assert.throws(()=>mod.parseLaunchArgs(['--start']));assert.throws(()=>mod.parseLaunchArgs(['--start','--trial-id','wrong']));const id='11111111-1111-4111-8111-111111111111';assert.deepEqual(mod.parseLaunchArgs(['--start','--trial-id',id]),{mode:'--start',trial_id:id});assert.throws(()=>mod.parseLaunchArgs(['--prepare','--start']));
+});

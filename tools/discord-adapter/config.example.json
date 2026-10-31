@@ -1,0 +1,14 @@
+{
+  "adapter": {
+    "application_id": "111111111111111111",
+    "command_id": "222222222222222222",
+    "guild_id": "333333333333333333",
+    "channel_id": "444444444444444444",
+    "owner_id": "555555555555555555",
+    "human_channel_ids": ["666666666666666666"],
+    "command": "relay-test",
+    "route_id": "discord-live-claude",
+    "session_address": "claude-no-tools"
+  },
+  "claude_executable": "C:/approved-installation/claude.exe"
+}

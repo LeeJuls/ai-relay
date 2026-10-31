@@ -2,6 +2,12 @@
 
 **English** · [한국어](CHANGELOG.ko.md) · [日本語](CHANGELOG.ja.md)
 
+## Unreleased — source-only Discord experiment
+
+- Add offline Discord mock/preflight, injectable Gateway/ACK, durable single-route coordination, task-scoped results and REST boundaries. ACK text uses English, Korean and Japanese catalogs.
+- Add an opt-in dedicated no-tool Claude worker and one-use bounded prepare/resume trials. Credentials and deployment-specific settings remain local and ignored; no automatic startup or permission changes.
+- One controlled Claude roundtrip was observed. Codex tool0, persistent operation and multi-bot routing remain unverified/unimplemented. Planned names are `준영-claude` and `준영-codex`; no Discord rename or second-bot creation was executed. No new ZIP release.
+
 ## 0.1.0-preview.4 — 2026-10-29
 
 - Independent reviews receive the existing field bounds before generation, with provider-compatible schemas. Oversized results remain rejected; findings are never automatically truncated.
