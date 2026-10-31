@@ -2,6 +2,13 @@
 
 **English** · [한국어](CHANGELOG.ko.md) · [日本語](CHANGELOG.ja.md)
 
+## Documentation update — 2026-10-31
+
+- Add Git update and receiver re-registration instructions in English, Korean and Japanese.
+- Require dated, translated update notes before owner-authorized pushes, separating public changes from private relay work.
+- Documentation only: runtime remains `0.1.0-preview.4`; no new ZIP release or live-app validation.
+- Verification: 131 existing regression tests pass; syntax checks pass for 21 modules and locale keys match across all three languages.
+
 ## 0.1.0-preview.4 — 2026-10-29
 
 - Independent reviews receive the existing field bounds before generation, with provider-compatible schemas. Oversized results remain rejected; findings are never automatically truncated.

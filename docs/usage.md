@@ -93,6 +93,12 @@ API: registerPair, createClient (send/reply/inbox/done), createAdapter, openRece
 
 See [token efficiency, slot actions, send-only and local measurements](token-efficiency.md). `start --probe-ms 30000` detects a missing session socket without model calls; 0 disables probes. Sender defaults and existing JSON envelopes/IDs are unchanged. A send-only refusal is final; do not retype or reroute the request.
 
+## Updating a Git checkout
+
+Finish active reviews, then stop each receiver from its own chat using `stop --root <data-root> --as <address>`. In the source checkout, run `git pull --ff-only`. If Git refuses, preserve local changes and resolve the conflict before updating; do not reset mail or execution records. Re-register each receiver with `start` from its receiving chat after the update. Pulling code alone does not reload a running helper.
+
+See the [changelog](../CHANGELOG.md) for dated source updates. ZIP releases are separate; a documentation-only update does not change the runtime version.
+
 ## Optional independent review
 
 See [review setup and recovery](independent-review.md). `review-config` enables each receiving address; `send --mode review` opts in per request. `--mode followup --previous <request-full-id>` carries the bounded same-task result. `review-status` distinguishes review work from app acceptance. Upgrade both sides before using review metadata; stop and re-register old workers from their own chats. Rollback: disable review, preserve uncertain jobs and continue normal mail. Do not downgrade with review requests pending: old receivers do not understand their optional metadata.
