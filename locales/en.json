@@ -92,5 +92,10 @@
   "REVIEW_INTERRUPTED": "An execution claim exists without a complete result; inspect the original job without rerunning it.",
   "REVIEW_PUBLICATION_UNCERTAIN": "Reply publication is uncertain. Check the exact reply ID before any manual recovery.",
   "REVIEW_REQUEST_TOO_LARGE": "Independent review requests are limited to 64 KiB of UTF-8 text; specify focused evidence instead of a history dump.",
-  "DISCORD_REQUEST_QUEUED": "Request queued."
+  "DISCORD_REQUEST_QUEUED": "Request queued.",
+  "summary_as_of": "Status as of authored time; owner reviewed",
+  "summary_completed": "Completed",
+  "summary_verified": "Directly verified",
+  "summary_unverified": "Unverified / blocked",
+  "summary_next": "Next"
 }

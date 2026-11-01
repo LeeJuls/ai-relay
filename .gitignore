@@ -9,3 +9,5 @@ dist/
 mail/
 data/
 coverage/
+
+/.discord.summary.local.json

@@ -40,3 +40,8 @@ Windows x64 실험 시험판입니다. 앱 호환성과 외부 사용자 검증�
 [사용 가이드](docs/usage.ko.md) · [지원 범위](SUPPORT.md) · [보안](SECURITY.md)
 
 [토큰 절약·공용 슬롯 안내](docs/token-efficiency.ko.md)
+
+
+## Discord 작업 요약 공유 실험
+
+각 Claude/Codex 작업 대화가 작성한 짧은 요약을 검토·승인한 뒤 별도 봇으로 게시하는 출력 전용 실험입니다. 자동 세션 연결이나 봇끼리 대화하는 기능은 아닙니다. 현재 두 건 시험은 완료됐으며 새 회차 반복 게시 기능은 아직 없습니다. [사용 방법과 요청문](docs/discord-summary-usage.ko.md)을 확인하세요.

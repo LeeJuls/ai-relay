@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises';
+import {runtimePaths} from './paths.mjs';
 import {subscriptionStatus,runWorker,probePrompt} from './worker.mjs';
 import {loadLocalConfig} from './local-config.mjs';
-const cwd=new URL('../../../.discord-worker/',import.meta.url);
+const {worker:cwd}=runtimePaths('claude');
 try{
  const local=await loadLocalConfig(new URL('../../.discord.local.json',import.meta.url)),cli=local.claude_executable;
  await fs.mkdir(cwd,{recursive:true});await subscriptionStatus({cli,cwd});

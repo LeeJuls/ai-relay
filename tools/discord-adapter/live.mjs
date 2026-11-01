@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';
-import {fileURLToPath} from 'node:url';
+import {runtimePaths} from './paths.mjs';
 import {loadCredential,createControlRequest,safeLogger} from './live-transport.mjs';
 import {verifyWorker,createWorkerBroker} from './worker.mjs';
 import {openDiscordHostWithTransport} from './host.mjs';
@@ -8,8 +8,7 @@ import {parseLaunchArgs,prepareLiveTrial,inspectLivePreparation,validateRegister
 import {loadLocalConfig} from './local-config.mjs';
 const log=safeLogger(value=>console.log(JSON.stringify(value)));
 let host,broker,boundary,shutdown,processUncertain=false;
-const cwd=fileURLToPath(new URL('../../../.discord-worker/',import.meta.url));
-const root=fileURLToPath(new URL('../../../.discord-live-ledger/',import.meta.url));
+const {worker:cwd,relay_ledger:root}=runtimePaths('claude');
 try{
  const launch=parseLaunchArgs(process.argv.slice(2));
  const local=await loadLocalConfig(new URL('../../.discord.local.json',import.meta.url)),config=local.adapter;

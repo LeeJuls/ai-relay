@@ -4,6 +4,8 @@
 
 ## Unreleased — source-only Discord experiment
 
+- Add output-only session summaries with owner-approved final-text hashes, separate durable claims/provider quotas, pinned bot clients and sequential two-post fake trials. No new credentials, bot changes, AI calls or live summary publication.
+- Add an injected summary client with pinned identity credentials, bounded cancellation/deadline checks and safe unknown outcomes. Verified with fake fetch only; no live credential loading or network execution.
 - Add offline Discord mock/preflight, injectable Gateway/ACK, durable single-route coordination, task-scoped results and REST boundaries. ACK text uses English, Korean and Japanese catalogs.
 - Add an opt-in dedicated no-tool Claude worker and one-use bounded prepare/resume trials. Credentials and deployment-specific settings remain local and ignored; no automatic startup or permission changes.
 - One controlled Claude roundtrip was observed. Codex tool0, persistent operation and multi-bot routing remain unverified/unimplemented. Planned names are `준영-claude` and `준영-codex`; no Discord rename or second-bot creation was executed. No new ZIP release.
@@ -57,3 +59,12 @@ Git source update. Versioned ZIP release assets are published separately.
 - Verified-runtime Windows portable packaging, installation/removal safeguards, and preview acceptance instructions.
 
 Owner selected MIT licensing with attribution on 2026-10-09. Pending release gates: new-product live two-way/restart tests, independent Windows installation, and multiple-user preview results. The MIT experimental preview is published at https://github.com/LeeJuls/ai-relay. No stable support claim or production-helper migration has occurred.
+
+### Unreleased: read-only Discord diagnostic
+- Added a separately invoked, bounded identity and current channel-permission check for two bots. It reads approved local credential files directly, emits sanitized metadata, and never posts messages or starts AI workers.
+
+- Relocated the linked Discord checkout to D and bound provider runtime paths inside its ignored runtime tree, preserving the existing Claude relay ledger.
+
+- Prepared an explicit owner-hash-gated two-summary host with fixed bindings, permission preflight and durable publication state; no live posting is performed by preparation.
+
+- Documented per-session summary requests and the completed-trial limit; moved private target/session bindings to an ignored strict local configuration.

@@ -92,5 +92,10 @@
   "REVIEW_INTERRUPTED": "実行記録はありますが完全な結果がありません。再実行せず元の作業を確認してください。",
   "REVIEW_PUBLICATION_UNCERTAIN": "返信の保存が不確実です。手動復旧前に正確な返信 ID を確認してください。",
   "REVIEW_REQUEST_TOO_LARGE": "独立レビューの依頼は UTF-8 で64 KiB までです。履歴全体ではなく必要な根拠を指定してください。",
-  "DISCORD_REQUEST_QUEUED": "リクエストをキューに追加しました。"
+  "DISCORD_REQUEST_QUEUED": "リクエストをキューに追加しました。",
+  "summary_as_of": "作成時点・ユーザー確認",
+  "summary_completed": "完了",
+  "summary_verified": "直接検証",
+  "summary_unverified": "未検証 / 障害",
+  "summary_next": "次の作業"
 }
